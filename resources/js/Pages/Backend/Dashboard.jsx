@@ -12,7 +12,7 @@ function Dashboard() {
                 <h1>ini adalah menu dashboard</h1>
                 <div className="grid grid-cols-12 gap-10">
                     <div className="col-span-6">
-                        <h1>Konten</h1>
+                        <h1>Konten perubahan pertama</h1>
                     </div>
                     <div className="col-span-3">
                         <h1>Konten</h1>
