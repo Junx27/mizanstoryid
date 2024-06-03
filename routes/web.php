@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FotoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,5 +26,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [SessionController::class, "logout"])->name('logout');
     Route::get('/dashboard', [AdminController::class, "dashboard"])->name('dashboard');
     Route::get('/galeri', [AdminController::class, "galeri"])->name("galeri");
+    Route::get('/menu', [AdminController::class, "menu"])->name("menu");
+    Route::get('/tambahfoto', [FotoController::class, "create"]);
+    Route::post('/tambahfoto', [FotoController::class, "store"]);
+    Route::get('/editfoto{id}', [FotoController::class, "show"]);
+    Route::get('/tambahvideo', [VideoController::class, "create"]);
+    Route::get('/editvideo{id}', [VideoController::class, "show"]);
     Route::get('/pesanan', [AdminController::class, "pesanan"])->name("pesanan");
 });

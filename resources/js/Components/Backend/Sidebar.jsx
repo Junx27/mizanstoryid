@@ -1,16 +1,15 @@
 import { usePage } from "@inertiajs/react";
 import React from "react";
 import { SideBarIcon } from "../../Data/Sidebar.js";
-import { Inertia, navigate } from "@inertiajs/inertia";
 
 function Sidebar() {
     const { url } = usePage();
     return (
         <div>
-            <div className="text-xs font-bold z-0 fixed top-0 p-2 w-full text-end py-4 pr-10 border-b shadow">
+            <div className="bg-white text-xs font-bold z-40 fixed top-0 p-2 w-full text-end py-4 pr-10 border-b shadow">
                 <h1>Hi, Admin</h1>
             </div>
-            <div className="z-10 bg-white fixed w-32 h-screen border-r shadow">
+            <div className="z-50 bg-white fixed w-32 h-screen border-r shadow">
                 <img
                     src="logo.png"
                     alt=""

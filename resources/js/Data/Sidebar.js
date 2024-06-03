@@ -5,6 +5,11 @@ export const SideBarIcon = [
         link: "/dashboard",
     },
     {
+        nama: "Menu",
+        gambar: "menu.png",
+        link: "/menu",
+    },
+    {
         nama: "Galeri",
         gambar: "gallery.png",
         link: "/galeri",

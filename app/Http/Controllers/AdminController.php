@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Foto;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,10 +14,15 @@ class AdminController extends Controller
     }
     public function galeri()
     {
-        return Inertia::render("Backend/Galeri");
+        $fotos = Foto::all();
+        return Inertia::render("Backend/Galeri", ["fotos" => $fotos]);
     }
     public function pesanan()
     {
         return Inertia::render("Backend/Pesanan");
+    }
+    public function menu()
+    {
+        return Inertia::render("Backend/Menu");
     }
 }

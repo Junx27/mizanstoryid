@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nama_paket');
+            $table->string('nama');
+            $table->string('jumlah_baterai');
+            $table->string('jam_terbang');
+            $table->string('operator');
+            $table->string('video');
+            $table->string('output');
+            $table->string('jam_pilot');
+            $table->string('lokasi');
+            $table->string('harga');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
