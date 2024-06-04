@@ -21,13 +21,19 @@ function Sidebar() {
                             href={row.link}
                             key={index}
                             className={`flex flex-col items-center text-xs mt-10 mb-8 ${
-                                url === row.link
-                                    ? "text-blue-400"
-                                    : "text-black"
+                                url === row.link ? "text-white" : "text-black"
                             }`}
                         >
                             <img src={row.gambar} alt="" className="w-12" />
-                            <span className="mt-2">{row.nama}</span>
+                            <span
+                                className={`mt-2 text-[8px] px-1 rounded shadow ${
+                                    url === row.link
+                                        ? "bg-blue-400 animate-pulse"
+                                        : "bg-none"
+                                }`}
+                            >
+                                {row.nama}
+                            </span>
                         </a>
                     ))}
                     <a
@@ -35,7 +41,9 @@ function Sidebar() {
                         className="mx-auto flex flex-col items-center text-xs my-8"
                     >
                         <img src="logout.png" alt="" className="w-12" />
-                        <span className="mt-2">Logout</span>
+                        <span className="mt-2 text-[8px] px-1 rounded shadow">
+                            Logout
+                        </span>
                     </a>
                 </div>
             </div>

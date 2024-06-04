@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Foto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class FotoController extends Controller
@@ -36,7 +37,7 @@ class FotoController extends Controller
             return Inertia::location("/galeri");
         }
         $validateddata = $request->validate([
-            'gambar' => 'image',
+            'gambar' => 'file',
             'nama' => 'required',
             'deskripsi' => 'required',
         ]);
@@ -46,7 +47,6 @@ class FotoController extends Controller
         }
 
         Foto::create($validateddata);
-        return Inertia::location('/galeri');
     }
 
     /**
@@ -54,7 +54,8 @@ class FotoController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render("Backend/Foto/EditFoto");
+        $foto = Foto::find($id);
+        return response()->json($foto);
     }
 
     /**
@@ -70,14 +71,34 @@ class FotoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'gambar' => 'file',
+            'nama' => 'required',
+            'deskripsi' => 'required',
+        ]);
+
+        if ($request->file('gambar')) {
+            if ($request->gambar_lama) {
+                Storage::delete($request->gambar_lama);
+            }
+            $validatedData['gambar'] = $request->file('gambar')->store('gambar');
+        }
+
+        Foto::findOrFail($id)->update($validatedData);
+        return Inertia::location("/galeri");
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
+
     {
-        //
+        $foto = Foto::find($id);
+        if ($foto->gambar) {
+            Storage::delete($foto->gambar);
+        }
+        $foto->delete();
     }
 }

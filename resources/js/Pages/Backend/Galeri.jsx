@@ -3,12 +3,17 @@ import Sidebar from "@/Components/Backend/Sidebar";
 import { usePage } from "@inertiajs/inertia-react";
 import React, { useState } from "react";
 import { url } from "../../Data/Url.js";
+import { api } from "@/Data/Api.js";
 import PopOver from "@/Components/PopOver.jsx";
 import CreateFoto from "./Foto/CreateFoto.jsx";
 import Button from "@/Components/Backend/Button.jsx";
+import CloseButton from "@/Components/Backend/CloseButton.jsx";
+import EditFoto from "./Foto/EditFoto.jsx";
+import axios from "axios";
 
 function Galeri({ fotos }) {
     const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const totalItemsFoto = 20;
     const completedItemsFoto = fotos.length;
     const progressFoto = (completedItemsFoto / totalItemsFoto) * 100;
@@ -17,6 +22,27 @@ function Galeri({ fotos }) {
     const progressVideo = (completedItemsVideo / totalItemsVideo) * 100;
     const foto = "Galeri foto";
     const video = "Galeri video";
+    const [selectedFoto, setSelectedFoto] = useState(null);
+
+    const handleEdit = async (id) => {
+        try {
+            const response = await axios.get(`${api}editfoto${id}`);
+            setSelectedFoto(response.data);
+            setOpenEdit(true);
+            console.log(selectedFoto);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${api}hapusfoto${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div>
             <div>
@@ -30,7 +56,7 @@ function Galeri({ fotos }) {
                             nama={foto}
                             progressComplete={completedItemsFoto}
                             progressValue={totalItemsFoto}
-                            totalProgress={progressFoto}
+                            totalProgress={progressFoto.toFixed(2)}
                         />
                     </div>
                     <div className="w-full ml-20 mr-5">
@@ -43,55 +69,63 @@ function Galeri({ fotos }) {
                         />
                     </div>
                 </div>
-                <div className="flex justify-between">
-                    <h1 className="font-bold mb-4">Galeri</h1>
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h1 className="font-bold mb-4">Foto</h1>
+                    </div>
                     <div className="flex mx-5">
                         {fotos.length < 20 && (
                             <div onClick={() => setOpen(!open)}>
-                                <p className="mr-5 text-xs text-white bg-black rounded-lg p-2 cursor-pointer">
-                                    Tambah foto
-                                </p>
+                                <Button>Tambah foto</Button>
                             </div>
                         )}
-                        <a href="/tambahvideo">
-                            <div className="text-xs text-white bg-black rounded-lg p-2">
-                                Tambah video
-                            </div>
-                        </a>
+                        <div onClick={() => setOpen(!open)} className="ml-5">
+                            <Button>Tambah video</Button>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div className="mt-5 grid grid-cols-4 gap-5 mr-5">
                         {fotos.map((row, index) => (
-                            <div
-                                className="shadow-lg p-5 rounded-lg"
-                                key={index}
-                            >
+                            <div className="" key={index}>
                                 <div>
                                     <img
                                         src={url + row.gambar}
                                         alt=""
-                                        className="w-full h-[200px] object-cover rounded-lg"
+                                        className="w-full h-[200px] object-cover rounded hover:rounded-none"
                                     />
-                                    <h1 className="font-bold mt-2">
+
+                                    <h1 className="px-2 text-xs capitalize font-bold mt-2">
                                         {row.nama}
                                     </h1>
-                                    <p className="mt-2 text-gray-400 text-xs">
+                                    <p className="px-2 mt-2 text-gray-400 text-[10px] h-4">
                                         {row.deskripsi}
                                     </p>
-                                    <div className="mt-3 text-xs flex justify-between items-center">
+                                    <div className="px-2 text-[10px] flex justify-between items-center">
                                         <div className="flex">
                                             <span className="material-symbols-outlined text-xs text-gray-500">
                                                 visibility
                                             </span>
                                             <p className="ml-3 text-gray-500">
-                                                {row.viewer}
+                                                {row.viewer} dilihat
                                             </p>
                                         </div>
-                                        <div>
-                                            <a href="/editfoto1">
+                                        <div className="flex">
+                                            <div
+                                                onClick={() =>
+                                                    handleEdit(row.id)
+                                                }
+                                            >
                                                 <Button>Edit</Button>
-                                            </a>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDelete(row.id)
+                                                }
+                                                className="ml-3"
+                                            >
+                                                <Button>Hapus</Button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -101,13 +135,30 @@ function Galeri({ fotos }) {
                 </div>
                 {open && (
                     <PopOver>
-                        <button
-                            className="text-white z-50"
-                            onClick={() => setOpen(!open)}
-                        >
-                            Close
-                        </button>
-                        <CreateFoto />
+                        <div className="relative">
+                            <div
+                                className="absolute top-2 right-2 z-50"
+                                onClick={() => setOpen(!open)}
+                            >
+                                <CloseButton />
+                            </div>
+
+                            <CreateFoto />
+                        </div>
+                    </PopOver>
+                )}
+                {openEdit && (
+                    <PopOver>
+                        <div className="relative">
+                            <div
+                                className="absolute top-2 right-2 z-50"
+                                onClick={() => setOpenEdit(!openEdit)}
+                            >
+                                <CloseButton />
+                            </div>
+
+                            <EditFoto foto={selectedFoto} />
+                        </div>
                     </PopOver>
                 )}
             </div>

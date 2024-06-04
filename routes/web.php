@@ -28,8 +28,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/galeri', [AdminController::class, "galeri"])->name("galeri");
     Route::get('/menu', [AdminController::class, "menu"])->name("menu");
     Route::get('/tambahfoto', [FotoController::class, "create"]);
-    Route::post('/tambahfoto', [FotoController::class, "store"]);
+    Route::put('/fotoupdate/{id}', [FotoController::class, 'update']);
     Route::get('/editfoto{id}', [FotoController::class, "show"]);
+    Route::delete('/hapusfoto{id}', [FotoController::class, "destroy"]);
+    Route::post('/tambahfoto', [FotoController::class, "store"]);
     Route::get('/tambahvideo', [VideoController::class, "create"]);
     Route::get('/editvideo{id}', [VideoController::class, "show"]);
     Route::get('/pesanan', [AdminController::class, "pesanan"])->name("pesanan");
