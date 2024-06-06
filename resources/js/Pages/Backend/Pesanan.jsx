@@ -2,52 +2,23 @@ import React, { useState } from "react";
 import Pagination from "@/Components/Backend/Pagination";
 import Sidebar from "@/Components/Backend/Sidebar";
 import ProgressBar from "@/Components/Backend/ProgressBar";
+import Button from "@/Components/Backend/Button";
+import axios from "axios";
+import PopOver from "@/Components/PopOver";
 
-const ITEMS_PER_PAGE = 3;
-
-function Pesanan() {
-    const data = [
-        {
-            id: 1,
-            name: "andi",
-            nomor: "0978564588",
-            order: "nama: paket bronze, detail:jhkjgjkgjgh jjkgjgj",
-        },
-        {
-            id: 2,
-            name: "senna",
-            nomor: "0978564588",
-            order: "nama: paket bronze, detail:jhkjgjkgjgh jjkgjgj",
-        },
-        {
-            id: 3,
-            name: "junx",
-            nomor: "0978564588",
-            order: "nama: paket bronze, detail:jhkjgjkgjgh jjkgjgj",
-        },
-        {
-            id: 4,
-            name: "junx",
-            nomor: "0978564588",
-            order: "nama: paket bronze, detail:jhkjgjkgjgh jjkgjgj",
-        },
-        {
-            id: 5,
-            name: "junx",
-            nomor: "0978564588",
-            order: "nama: paket bronze, detail:jhkjgjkgjgh jjkgjgj",
-        },
-        // tambahkan data lainnya
-    ];
-    const foto = "Penggunanan memori";
-    const totalItemsFoto = 2000;
-    const completedItemsFoto = data.length;
-    const progressFoto = (completedItemsFoto / totalItemsFoto) * 100;
+function Pesanan({ pesanans }) {
+    const ITEMS_PER_PAGE = 10;
+    const order = "Penggunanan memori";
+    const totalItemsOrder = 2000;
+    const completedItemsOrder = pesanans.length;
+    const progressOrder = (completedItemsOrder / totalItemsOrder) * 100;
 
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [filterNama, setFilterNama] = useState("");
+    const [openPopup, setOpenPopup] = useState(false);
 
-    const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(pesanans.length / ITEMS_PER_PAGE);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -65,7 +36,7 @@ function Pesanan() {
 
     const handleSelectAll = (e) => {
         if (e.target.checked) {
-            const allIds = data.map((item) => item.id);
+            const allIds = pesanans.map((item) => item.id);
             setSelectedIds(allIds);
         } else {
             setSelectedIds([]);
@@ -75,7 +46,16 @@ function Pesanan() {
     const getCurrentPageData = () => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
-        return data.slice(startIndex, endIndex);
+
+        let filteredData = pesanans;
+
+        if (filterNama) {
+            filteredData = filteredData.filter((item) =>
+                item.nama.toLowerCase().includes(filterNama.toLowerCase())
+            );
+        }
+
+        return filteredData.slice(startIndex, endIndex);
     };
 
     const isSelected = (id) => {
@@ -83,7 +63,14 @@ function Pesanan() {
     };
 
     const handleDelete = () => {
-        console.log("Selected IDs:", selectedIds);
+        selectedIds.forEach(async (id) => {
+            try {
+                await axios.delete(`/pesanan/${id}`);
+                setOpenPopup(true);
+            } catch (error) {
+                console.error("Error deleting data:", error);
+            }
+        });
     };
 
     return (
@@ -91,36 +78,62 @@ function Pesanan() {
             <div>
                 <Sidebar />
             </div>
-            <div className="ml-[150px] mr-5 pt-20">
-                <h1 className="font-bold mb-10">Data pesanan masuk</h1>
+            <div className="ml-[150px] mr-5 pt-20 relative">
+                {openPopup && (
+                    <PopOver>
+                        <div className="bg-white shadow-lg w-64 p-5 rounded-lg -mt-64">
+                            <p className="text-xs text-center">
+                                Data pesanan masuk telah dihapus
+                            </p>
+                            <div
+                                className="flex justify-center mt-5"
+                                onClick={() => {
+                                    setOpenPopup(!openPopup),
+                                        window.location.reload();
+                                }}
+                            >
+                                <Button className={"w-20"}>ok</Button>
+                            </div>
+                        </div>
+                    </PopOver>
+                )}
+                <h1 className="font-bold mb-10">Daftar pesanan masuk</h1>
                 <div className="flex">
                     <div className="mr-5 w-96 shadow-lg p-5 rounded-lg">
                         <ProgressBar
-                            progress={progressFoto}
-                            nama={foto}
-                            progressComplete={completedItemsFoto}
-                            progressValue={totalItemsFoto}
-                            totalProgress={progressFoto}
+                            progress={progressOrder}
+                            nama={order}
+                            progressComplete={completedItemsOrder}
+                            progressValue={totalItemsOrder}
+                            totalProgress={progressOrder.toFixed(2)}
+                        />
+                    </div>
+                    <div className="mb-5 absolute top-20 left-[25%]">
+                        <input
+                            type="text"
+                            placeholder="Cari nama"
+                            value={filterNama}
+                            onChange={(e) => setFilterNama(e.target.value)}
+                            className="border border-blue-500 px-2 py-1 rounded-lg text-xs"
                         />
                     </div>
                     <table className="table-auto w-full shadow-lg rounded-lg p-10 bg-white">
                         <thead>
                             <tr className="border-b">
-                                <th className="border-r px-3 py-2 font-bold rounded-tl text-start text-blue-500 w-20">
+                                <th className="border-r px-3 py-2 font-bold rounded-tl text-start text-blue-500 w-5">
                                     <input
                                         type="checkbox"
-                                        className="mr-3 rounded outline-0"
+                                        className="rounded outline-0"
                                         onChange={handleSelectAll}
                                     />
-                                    No
                                 </th>
-                                <th className="border-r px-3 py-2 font-bold text-start text-blue-500">
+                                <th className="border-r px-3 py-4 font-bold text-start text-sm">
                                     Nama
                                 </th>
-                                <th className="border-r px-3 py-2 font-bold text-start text-blue-500">
-                                    Nomor
+                                <th className="border-r px-3 py-4 font-bold text-start text-sm">
+                                    Kontak
                                 </th>
-                                <th className="px-3 py-2 font-bold text-start text-blue-500">
+                                <th className="px-3 py-4 font-bold text-start text-sm">
                                     Order
                                 </th>
                             </tr>
@@ -138,28 +151,28 @@ function Pesanan() {
                                                 handleCheckboxChange(e, item.id)
                                             }
                                         />
-                                        {index + 1}
                                     </td>
                                     <td className="border-r px-3 py-2 font-bold">
-                                        {item.name}
+                                        {item.nama}
                                     </td>
                                     <td className="border-r px-3 py-2">
-                                        {item.nomor}
+                                        {item.kontak}
                                     </td>
-                                    <td className="px-3 py-2">{item.order}</td>
-                                    <div className=" absolute -top-[100px] right-0 px-3 py-2">
+                                    <td className="px-3 py-2">
+                                        {item.deskripsi}
+                                    </td>
+                                    <td className=" absolute -top-[100px] right-0 px-3 py-2">
                                         {selectedIds.length > 0 && (
-                                            <p className="text-xs flex items-center">
-                                                <span
-                                                    className="text-sm material-symbols-outlined"
-                                                    onClick={handleDelete}
-                                                >
-                                                    delete
-                                                </span>
-                                                Hapus
-                                            </p>
+                                            <div
+                                                className="text-xs flex items-center"
+                                                onClick={handleDelete}
+                                            >
+                                                <Button className={"shadow-sm"}>
+                                                    Hapus
+                                                </Button>
+                                            </div>
                                         )}
-                                    </div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -169,7 +182,7 @@ function Pesanan() {
                     currentPage={currentPage}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
-                    data={data}
+                    data={pesanans}
                 />
             </div>
         </div>

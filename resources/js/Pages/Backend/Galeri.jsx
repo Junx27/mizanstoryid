@@ -10,26 +10,30 @@ import Button from "@/Components/Backend/Button.jsx";
 import CloseButton from "@/Components/Backend/CloseButton.jsx";
 import EditFoto from "./Foto/EditFoto.jsx";
 import axios from "axios";
+import CreateVideo from "./Video/CreateVideo.jsx";
+import EditVideo from "./Video/EditVideo.jsx";
 
-function Galeri({ fotos }) {
+function Galeri({ fotos, videos }) {
     const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [openVideo, setOpenVideo] = useState(false);
+    const [openEditVideo, setOpenEditVideo] = useState(false);
     const totalItemsFoto = 20;
     const completedItemsFoto = fotos.length;
     const progressFoto = (completedItemsFoto / totalItemsFoto) * 100;
     const totalItemsVideo = 10;
-    const completedItemsVideo = 7;
+    const completedItemsVideo = videos.length;
     const progressVideo = (completedItemsVideo / totalItemsVideo) * 100;
     const foto = "Galeri foto";
     const video = "Galeri video";
     const [selectedFoto, setSelectedFoto] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
     const handleEdit = async (id) => {
         try {
             const response = await axios.get(`${api}editfoto${id}`);
             setSelectedFoto(response.data);
             setOpenEdit(true);
-            console.log(selectedFoto);
         } catch (error) {
             console.error("Error fetching foto data:", error);
         }
@@ -37,6 +41,23 @@ function Galeri({ fotos }) {
     const handleDelete = async (id) => {
         try {
             await axios.delete(`${api}hapusfoto${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleEditVideo = async (id) => {
+        try {
+            const response = await axios.get(`${api}editvideo${id}`);
+            setSelectedVideo(response.data);
+            setOpenEditVideo(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
+    const handleDeleteVideo = async (id) => {
+        try {
+            await axios.delete(`${api}hapusvideo${id}`);
             window.location.reload();
         } catch (error) {
             console.error(error);
@@ -65,7 +86,7 @@ function Galeri({ fotos }) {
                             nama={video}
                             progressComplete={completedItemsVideo}
                             progressValue={totalItemsVideo}
-                            totalProgress={progressVideo}
+                            totalProgress={progressVideo.toFixed(2)}
                         />
                     </div>
                 </div>
@@ -79,9 +100,14 @@ function Galeri({ fotos }) {
                                 <Button>Tambah foto</Button>
                             </div>
                         )}
-                        <div onClick={() => setOpen(!open)} className="ml-5">
-                            <Button>Tambah video</Button>
-                        </div>
+                        {videos.length < 10 && (
+                            <div
+                                onClick={() => setOpenVideo(!openVideo)}
+                                className="ml-5"
+                            >
+                                <Button>Tambah video</Button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div>
@@ -106,8 +132,9 @@ function Galeri({ fotos }) {
                                             <span className="material-symbols-outlined text-xs text-gray-500">
                                                 visibility
                                             </span>
-                                            <p className="ml-3 text-gray-500">
-                                                {row.viewer} dilihat
+                                            <p className="ml-3 text-gray-500 w-20 truncate">
+                                                {row.viewer.toLocaleString()}{" "}
+                                                views
                                             </p>
                                         </div>
                                         <div className="flex">
@@ -116,7 +143,9 @@ function Galeri({ fotos }) {
                                                     handleEdit(row.id)
                                                 }
                                             >
-                                                <Button>Edit</Button>
+                                                <Button className={"w-20"}>
+                                                    Edit
+                                                </Button>
                                             </div>
                                             <div
                                                 onClick={() =>
@@ -124,7 +153,64 @@ function Galeri({ fotos }) {
                                                 }
                                                 className="ml-3"
                                             >
-                                                <Button>Hapus</Button>
+                                                <Button className={"w-20"}>
+                                                    Hapus
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div>
+                        <h1 className="font-bold my-4">Video</h1>
+                    </div>
+                    <div className="mt-5 grid grid-cols-4 gap-5 mr-5">
+                        {videos.map((row, index) => (
+                            <div className="" key={index}>
+                                <div>
+                                    <img
+                                        src={url + row.gambar}
+                                        alt=""
+                                        className="w-full h-[200px] object-cover rounded hover:rounded-none"
+                                    />
+
+                                    <h1 className="px-2 text-xs capitalize font-bold mt-2">
+                                        {row.nama}
+                                    </h1>
+                                    <p className="px-2 mt-2 text-gray-400 text-[10px] h-4">
+                                        {row.deskripsi}
+                                    </p>
+                                    <div className="px-2 text-[10px] flex justify-between items-center">
+                                        <div className="flex">
+                                            <span className="material-symbols-outlined text-xs text-gray-500">
+                                                visibility
+                                            </span>
+                                            <p className="ml-3 text-gray-500 w-20 truncate">
+                                                {row.viewer.toLocaleString()}{" "}
+                                                views
+                                            </p>
+                                        </div>
+                                        <div className="flex">
+                                            <div
+                                                onClick={() =>
+                                                    handleEditVideo(row.id)
+                                                }
+                                            >
+                                                <Button className={"w-20"}>
+                                                    Edit
+                                                </Button>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDeleteVideo(row.id)
+                                                }
+                                                className="ml-3"
+                                            >
+                                                <Button className={"w-20"}>
+                                                    Hapus
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +228,6 @@ function Galeri({ fotos }) {
                             >
                                 <CloseButton />
                             </div>
-
                             <CreateFoto />
                         </div>
                     </PopOver>
@@ -158,6 +243,33 @@ function Galeri({ fotos }) {
                             </div>
 
                             <EditFoto foto={selectedFoto} />
+                        </div>
+                    </PopOver>
+                )}
+                {openVideo && (
+                    <PopOver>
+                        <div className="relative">
+                            <div
+                                className="absolute top-2 right-2 z-50"
+                                onClick={() => setOpenVideo(!openVideo)}
+                            >
+                                <CloseButton />
+                            </div>
+                            <CreateVideo />
+                        </div>
+                    </PopOver>
+                )}
+                {openEditVideo && (
+                    <PopOver>
+                        <div className="relative">
+                            <div
+                                className="absolute top-2 right-2 z-50"
+                                onClick={() => setOpenEditVideo(!openEditVideo)}
+                            >
+                                <CloseButton />
+                            </div>
+
+                            <EditVideo video={selectedVideo} />
                         </div>
                     </PopOver>
                 )}

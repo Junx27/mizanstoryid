@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('gambar');
             $table->string('nama');
             $table->string('deskripsi');
-            $table->integer('viewer');
+            $table->integer('viewer')->default(0);
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

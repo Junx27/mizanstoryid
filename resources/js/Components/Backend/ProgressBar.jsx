@@ -22,7 +22,7 @@ function ProgressBar({
     }, [displayProgress, progress]);
 
     return (
-        <div className="mt-10">
+        <div className="mt-5">
             <h2 className="text-xl font-bold mb-4">{nama}</h2>
             <div className="flex justify-between">
                 <p>

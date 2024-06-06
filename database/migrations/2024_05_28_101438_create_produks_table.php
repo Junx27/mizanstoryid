@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('jam_pilot');
             $table->string('lokasi');
             $table->string('harga');
+            $table->string('deskripsi');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

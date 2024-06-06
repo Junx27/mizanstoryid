@@ -1,215 +1,184 @@
+import Button from "@/Components/Backend/Button";
+import FormaterRupiah from "@/Components/Backend/FormaterRupiah";
+import HeaderSubText from "@/Components/Backend/HeaderSubText";
 import Footer from "@/Components/Frontend/Footer";
 import Navbar from "@/Components/Frontend/Navbar";
+import SidebarKonsumen from "@/Components/Frontend/SidebarUser";
 import React, { useState } from "react";
+import CreateOrder from "./Controller/CreateOrder";
+import PopOver from "@/Components/PopOver";
+import axios from "axios";
+import { api } from "@/Data/Api";
+import CloseButton from "@/Components/Backend/CloseButton";
 
-function Price() {
-    const [hoveredItem, setHoveredItem] = useState(null);
-
-    const handleMouseEnter = (index) => {
-        setHoveredItem(index);
+function Price({ aerial, fpv }) {
+    const [openOrder, setOpenOrder] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState();
+    const handleEditOrder = async (id) => {
+        try {
+            const response = await axios.get(`${api}tambahorder/${id}`);
+            setSelectedOrder(response.data);
+            setOpenOrder(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
     };
-
-    const handleMouseLeave = () => {
-        setHoveredItem(null);
-    };
-
     return (
         <div>
-            <Navbar />
-            <div className="m-5 md:m-20 mt-5">
-                <h1 className="font-bold text-xl md:text-3xl text-center">
-                    Harga{" "}
-                    <span className="text-[#92bef7]">Sewa Drone AERIAL</span>
-                </h1>
-                <p className="text-gray-500 text-[10px] md:text-xs text-center my-3">
-                    Banyak pilihan paket untuk jasa dokumentasi anda
-                </p>
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-                    {[1, 2, 3].map((index) => (
-                        <div
-                            key={index}
-                            className={`transition-all duration-400 w-full h-full border p-5 md:p-10 relative cursor-pointer ${
-                                hoveredItem === index
-                                    ? "border-blue-500 shadow-lg scale-105"
-                                    : "border-black shadow scale-100"
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            <div className="relative z-10">
+            <SidebarKonsumen />
+            <div className="ml-[150px]">
+                <div>
+                    <img
+                        src="aerial.png"
+                        alt=""
+                        className="w-[600px] h-96 object-cover mx-auto"
+                    />
+                    <h1 className="font-bold text-xl text-center my-2">
+                        Harga Sewa Drone AERIAL
+                    </h1>
+                    <p className="text-gray-500 text-xs text-center mb-10">
+                        Pilihlah sesuai kebutuhan dokumentasi anda, harga
+                        sewaktu-waktu dapat berubah
+                    </p>
+                    <div className="grid grid-cols-3 gap-10 mx-10 font-medium">
+                        {aerial.map((row, index) => (
+                            <div
+                                className={`transition-all duration-500 p-5 rounded-lg h-[520px] shadow-md hover:shadow-lg`}
+                                key={index}
+                            >
                                 <h1
-                                    className={`transition-all duration-300 text-center font-bold text-xl md:text-2xl uppercase ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
+                                    className={`uppercase font-bold text-center mb-10 mt-5 p-2 rounded-md ${
+                                        row.nama === "PAKET BRONZE"
+                                            ? "bg-[#F7EFE5]"
+                                            : ""
+                                    } ${
+                                        row.nama === "PAKET SILVER"
+                                            ? "bg-[#F1EAFF]"
+                                            : ""
+                                    } ${
+                                        row.nama === "PAKET GOLD"
+                                            ? "bg-[#fddcc5]"
+                                            : ""
                                     }`}
                                 >
-                                    paket bronze
+                                    {row.nama}
                                 </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
+                                <p className="text-xs mt-5 h-20 text-justify">
+                                    {row.deskripsi}
                                 </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
+                                <ul className="list-inside list-disc text-xs mb-5">
+                                    <li className="mt-2">
+                                        {row.jumlah_baterai}
+                                    </li>
+                                    <li>{row.jam_terbang}</li>
+                                    <li>{row.operator}</li>
+                                    <li>{row.video}</li>
+                                    <li>{row.output}</li>
+                                    <li>{row.jam_pilot}</li>
+                                    <li>{row.lokasi}</li>
                                 </ul>
-                                <p
-                                    className={`transition-all duration-300 my-5 text-center text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
+                                <p className="text-xs text-center capitalize mt-10">
                                     Mulai dari
                                 </p>
-                                <h2
-                                    className={`transition-all duration-300 my-8 text-center font-bold text-xl md:text-3xl ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    Rp.750.000,00
+                                <h2 className="text-center my-3 font-bold mt-5">
+                                    <FormaterRupiah number={row.harga} />
                                 </h2>
-                                <button
-                                    className={`transition-all duration-300 p-5 w-full font-bold text-xs md:text-sm ${
-                                        hoveredItem === index
-                                            ? "bg-black text-white animate-bounce"
-                                            : "bg-[#92bef7] text-white"
-                                    }`}
+                                <div
+                                    className="flex justify-center mt-5"
+                                    onClick={() => handleEditOrder(row.id)}
                                 >
-                                    Book Now!!
-                                </button>
+                                    <Button className={"w-64"}>
+                                        Order NOW!
+                                    </Button>
+                                </div>
                             </div>
-                            <div
-                                className={`z-0 transition-all duration-500 absolute inset-0 bg-blue-400 ${
-                                    hoveredItem === index ? "w-full" : "w-0"
-                                }`}
-                            ></div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <div className="m-5 md:m-20 my-20">
-                <h1 className="font-bold text-xl md:text-3xl text-center">
-                    Harga <span className="text-blue-400">Sewa Drone FPV</span>
-                </h1>
-                <p className="text-gray-500 text-[10px] md:text-xs text-center my-3">
-                    Banyak pilihan paket untuk jasa dokumentasi anda
-                </p>
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10">
-                    {[4, 5, 6].map((index) => (
-                        <div
-                            key={index}
-                            className={`transition-all duration-400 w-full h-full border p-5 md:p-10 relative cursor-pointer ${
-                                hoveredItem === index
-                                    ? "border-blue-500 shadow-lg scale-105"
-                                    : "border-black shadow scale-100"
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            <div className="relative z-10">
+                <div className="mb-20">
+                    <img
+                        src="fpv.png"
+                        alt=""
+                        className="w-[800px] h-96 scale-[60%] object-cover mx-auto"
+                    />
+                    <h1 className="font-bold text-xl text-center my-2">
+                        Harga Sewa Drone FPV
+                    </h1>
+                    <p className="text-gray-500 text-xs text-center mb-10">
+                        Pilihlah sesuai kebutuhan dokumentasi anda, harga
+                        sewaktu-waktu dapat berubah
+                    </p>
+                    <div className="grid grid-cols-3 gap-10 mx-10 font-medium">
+                        {fpv.map((row, index) => (
+                            <div
+                                className={`transition-all duration-500 p-5 rounded-lg h-[520px] shadow-md hover:shadow-lg`}
+                                key={index}
+                            >
                                 <h1
-                                    className={`transition-all duration-300 text-center font-bold text-xl md:text-2xl uppercase ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
+                                    className={`uppercase font-bold text-center mb-10 mt-5 p-2 rounded-md ${
+                                        row.nama === "PAKET BRONZE"
+                                            ? "bg-[#F7EFE5]"
+                                            : ""
+                                    } ${
+                                        row.nama === "PAKET SILVER"
+                                            ? "bg-[#F1EAFF]"
+                                            : ""
+                                    } ${
+                                        row.nama === "PAKET GOLD"
+                                            ? "bg-[#fddcc5]"
+                                            : ""
                                     }`}
                                 >
-                                    paket bronze
+                                    {row.nama}
                                 </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
+                                <p className="text-xs mt-5 h-20 text-justify">
+                                    {row.deskripsi}
                                 </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
+                                <ul className="list-inside list-disc text-xs mb-5">
+                                    <li className="mt-2">
+                                        {row.jumlah_baterai}
+                                    </li>
+                                    <li>{row.jam_terbang}</li>
+                                    <li>{row.operator}</li>
+                                    <li>{row.video}</li>
+                                    <li>{row.output}</li>
+                                    <li>{row.jam_pilot}</li>
+                                    <li>{row.lokasi}</li>
                                 </ul>
-                                <p
-                                    className={`transition-all duration-300 my-5 text-center text-[10px] md:text-sm ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
+                                <p className="text-xs text-center capitalize mt-10">
                                     Mulai dari
                                 </p>
-                                <h2
-                                    className={`transition-all duration-300 my-8 text-center font-bold text-xl md:text-3xl ${
-                                        hoveredItem === index
-                                            ? "text-white"
-                                            : "text-black"
-                                    }`}
-                                >
-                                    Rp.750.000,00
+                                <h2 className="text-center my-3 font-bold mt-5">
+                                    <FormaterRupiah number={row.harga} />
                                 </h2>
-                                <button
-                                    className={`transition-all duration-300 p-5 w-full font-bold text-xs md:text-sm ${
-                                        hoveredItem === index
-                                            ? "bg-black text-white animate-bounce"
-                                            : "bg-[#92bef7] text-white"
-                                    }`}
+                                <div
+                                    className="flex justify-center mt-5"
+                                    onClick={() => handleEditOrder(row.id)}
                                 >
-                                    Book Now!!
-                                </button>
+                                    <Button className={"w-64"}>
+                                        Order NOW!
+                                    </Button>
+                                </div>
                             </div>
-                            <div
-                                className={`z-0 transition-all duration-500 absolute inset-0 bg-blue-400 ${
-                                    hoveredItem === index ? "w-full" : "w-0"
-                                }`}
-                            ></div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+                {openOrder && (
+                    <PopOver>
+                        <div className="relative">
+                            <div
+                                className="absolute top-2 right-2 z-50 "
+                                onClick={() => setOpenOrder(!openOrder)}
+                            >
+                                <CloseButton />
+                            </div>
+                            <div>
+                                <CreateOrder order={selectedOrder} />
+                            </div>
+                        </div>
+                    </PopOver>
+                )}
             </div>
-            <Footer />
         </div>
     );
 }

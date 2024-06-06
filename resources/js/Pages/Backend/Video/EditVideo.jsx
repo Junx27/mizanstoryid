@@ -6,12 +6,12 @@ import TextInput from "@/Components/Backend/TextInput";
 import TextAreaInput from "@/Components/Backend/TextArea";
 import { url } from "@/Data/Url";
 
-function EditVideo() {
+function EditVideo({ video }) {
     const { data, setData, post, processing } = useForm({
         _method: "PUT",
-        nama: foto.nama,
-        deskripsi: foto.deskripsi,
-        gambar_lama: foto.gambar,
+        nama: video.nama,
+        deskripsi: video.deskripsi,
+        gambar_lama: video.gambar,
     });
     const [imagePreview, setImagePreview] = useState(url + data.gambar_lama);
 
@@ -29,7 +29,7 @@ function EditVideo() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(`/fotoupdate/${foto.id}`);
+        post(`/videoupdate/${video.id}`);
     };
     return (
         <div>
@@ -44,7 +44,7 @@ function EditVideo() {
                         <input
                             type="hidden"
                             name="gambar_lama"
-                            value={foto.gambar}
+                            value={video.gambar}
                         />
                         <input
                             type="file"

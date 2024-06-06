@@ -6,12 +6,12 @@ import TextInput from "@/Components/Backend/TextInput";
 import TextAreaInput from "@/Components/Backend/TextArea";
 import { url } from "@/Data/Url";
 
-function EditBlog() {
+function EditBlog({ blog }) {
     const { data, setData, post, processing } = useForm({
         _method: "PUT",
-        nama: foto.nama,
-        deskripsi: foto.deskripsi,
-        gambar_lama: foto.gambar,
+        nama: blog.nama,
+        deskripsi: blog.deskripsi,
+        gambar_lama: blog.gambar,
     });
     const [imagePreview, setImagePreview] = useState(url + data.gambar_lama);
 
@@ -29,7 +29,7 @@ function EditBlog() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(`/fotoupdate/${foto.id}`);
+        post(`/blogupdate/${blog.id}`);
     };
     return (
         <div>
@@ -44,7 +44,7 @@ function EditBlog() {
                         <input
                             type="hidden"
                             name="gambar_lama"
-                            value={foto.gambar}
+                            value={blog.gambar}
                         />
                         <input
                             type="file"
@@ -60,6 +60,7 @@ function EditBlog() {
                         value={data.nama}
                         onChange={(e) => setData("nama", e.target.value)}
                         placeholder="Nama"
+                        maxLength={25}
                         required
                     />
                     <TextAreaInput

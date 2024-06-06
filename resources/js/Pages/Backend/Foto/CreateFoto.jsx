@@ -59,7 +59,7 @@ function CreateFoto() {
                             onClick={() => window.location.reload()}
                             className="text-center mt-5"
                         >
-                            <Button>ok</Button>
+                            <Button className={"w-32"}>ok</Button>
                         </div>
                     </Modal>
                 </div>

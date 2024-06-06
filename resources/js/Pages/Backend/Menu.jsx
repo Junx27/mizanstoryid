@@ -1,386 +1,392 @@
+import Button from "@/Components/Backend/Button";
+import CloseButton from "@/Components/Backend/CloseButton";
 import ProgressBar from "@/Components/Backend/ProgressBar";
 import Sidebar from "@/Components/Backend/Sidebar";
-import React from "react";
+import PopOver from "@/Components/PopOver";
+import React, { useState } from "react";
+import CreateBlog from "./Blog/CreateBlog";
+import { url } from "@/Data/Url";
+import DateFormater from "@/Components/Backend/DateFormater";
+import { api } from "@/Data/Api";
+import axios from "axios";
+import EditBlog from "./Blog/EditBlog";
+import CreatePaket from "./Paket/CreatePaket";
+import EditPaket from "./Paket/EditPaket";
+import HeaderSubText from "@/Components/Backend/HeaderSubText";
+import FormaterRupiah from "@/Components/Backend/FormaterRupiah";
 
-function Menu() {
-    const totalItemsFoto = 20;
-    const completedItemsFoto = 7;
-    const progressFoto = (completedItemsFoto / totalItemsFoto) * 100;
-    const totalItemsVideo = 10;
-    const completedItemsVideo = 7;
-    const progressVideo = (completedItemsVideo / totalItemsVideo) * 100;
-    const totalItemsOrder = 2000;
-    const completedItemsOrder = 76;
-    const progressOrder = (completedItemsOrder / totalItemsOrder) * 100;
-    const foto = "Paket AERIAL";
+function Menu({ blogs, aerial, fpv }) {
+    const [openCreateBlog, setOpenCreateBlog] = useState();
+    const [openCreatePaket, setOpenCreatePaket] = useState();
+    const [openEditBlog, setOpenEditBlog] = useState();
+    const [openEditAerial, setOpenEditAerial] = useState();
+    const [openEditFpv, setOpenEditFpv] = useState();
+    const totalItemsAerail = 3;
+    const completedItemsAerial = aerial.length;
+    const progressAerial = (completedItemsAerial / totalItemsAerail) * 100;
+    const totalItemsFpv = 3;
+    const completedItemsFpv = fpv.length;
+    const progressFpv = (completedItemsFpv / totalItemsFpv) * 100;
+    const totalItemsBlog = 2000;
+    const completedItemsBlog = blogs.length;
+    const progressBlog = (completedItemsBlog / totalItemsBlog) * 100;
+    const AERIAL = "Paket AERIAL";
     const video = "Paket FPV";
-    const order = "Blog";
+    const blog = "Blog";
+    const [selectedBlog, setSelectedBlog] = useState();
+    const [selectedAerial, setSelectedAerial] = useState();
+    const [selectedFpv, setSelectedFpv] = useState();
+    const handleEditBlog = async (id) => {
+        try {
+            const response = await axios.get(`${api}editblog${id}`);
+            setSelectedBlog(response.data);
+            setOpenEditBlog(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
+    const handleDeleteBlog = async (id) => {
+        try {
+            await axios.delete(`${api}hapusblog${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleEditArial = async (id) => {
+        try {
+            const response = await axios.get(`${api}editpaket${id}`);
+            setSelectedAerial(response.data);
+            setOpenEditAerial(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
+    const handleDeleteAerial = async (id) => {
+        try {
+            await axios.delete(`${api}hapuspaket${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleEditFpv = async (id) => {
+        try {
+            const response = await axios.get(`${api}editpaket${id}`);
+            setSelectedFpv(response.data);
+            setOpenEditFpv(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
+    const handleDeleteFpv = async (id) => {
+        try {
+            await axios.delete(`${api}hapuspaket${id}`);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div>
             <div>
                 <Sidebar />
             </div>
-            <div className="font-bold ml-[150px] pt-20">
+            <div className="ml-[150px] pt-20">
                 <div className="flex">
                     <div className="fixed w-[300px] p-10 shadow-lg rounded-lg">
                         <div className="my-3">
                             <ProgressBar
-                                progress={progressFoto}
-                                nama={foto}
-                                progressComplete={completedItemsFoto}
-                                progressValue={totalItemsFoto}
-                                totalProgress={progressFoto}
+                                progress={progressAerial}
+                                nama={AERIAL}
+                                progressComplete={completedItemsAerial}
+                                progressValue={totalItemsAerail}
+                                totalProgress={progressAerial.toFixed(2)}
                             />
                         </div>
                         <div className="my-3">
                             <ProgressBar
-                                progress={progressVideo}
+                                progress={progressFpv}
                                 nama={video}
-                                progressComplete={completedItemsVideo}
-                                progressValue={totalItemsVideo}
-                                totalProgress={progressVideo}
+                                progressComplete={completedItemsFpv}
+                                progressValue={totalItemsFpv}
+                                totalProgress={progressFpv.toFixed(2)}
                             />
                         </div>
                         <div className="my-3">
                             <ProgressBar
-                                progress={progressOrder}
-                                nama={order}
-                                progressComplete={completedItemsOrder}
-                                progressValue={totalItemsOrder}
-                                totalProgress={progressOrder}
+                                progress={progressBlog}
+                                nama={blog}
+                                progressComplete={completedItemsBlog}
+                                progressValue={totalItemsBlog}
+                                totalProgress={progressBlog}
                             />
                         </div>
-                        <div className="mt-10 flex justify-center text-xs">
-                            <button className="p-2 w-full shadow bg-black text-white rounded-lg">
-                                Tambah paket
-                            </button>
+                        <div
+                            className="mt-10 flex justify-center text-xs"
+                            onClick={() => setOpenCreatePaket(!openCreatePaket)}
+                        >
+                            <Button className={"w-full"}>Tambah paket</Button>
                         </div>
-                        <div className="mt-5 flex justify-center text-xs">
-                            <button className="p-2 w-full shadow bg-black text-white rounded-lg">
-                                Tambah blog
-                            </button>
+                        <div
+                            className="mt-0 flex justify-center text-xs"
+                            onClick={() => setOpenCreateBlog(!openCreateBlog)}
+                        >
+                            <Button className={"w-full"}>Tambah blog</Button>
                         </div>
                     </div>
                     <div className="ml-[350px]">
-                        <h1 className="text-xl font-bold mb-10">
-                            Paket AERIAL
-                        </h1>
-                        <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
+                        <div>
+                            <HeaderSubText nama={"Paket AERIAL"} />
+                            <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
+                                {aerial.map((row, index) => (
+                                    <div
+                                        className="transition-all duration-500 p-5 rounded-lg shadow-md hover:shadow-lg"
+                                        key={index}
+                                    >
+                                        <h1 className="uppercase font-bold text-center">
+                                            {row.nama}
+                                        </h1>
+                                        <p className="text-gray-500 text-xs mt-5 h-20 text-justify">
+                                            {row.deskripsi}
+                                        </p>
+                                        <ul className="text-gray-500 list-inside list-disc text-xs mb-5">
+                                            <li className="mt-2">
+                                                {row.jumlah_baterai}
+                                            </li>
+                                            <li>{row.jam_terbang}</li>
+                                            <li>{row.operator}</li>
+                                            <li>{row.video}</li>
+                                            <li>{row.output}</li>
+                                            <li>{row.jam_pilot}</li>
+                                            <li>{row.lokasi}</li>
+                                        </ul>
+                                        <p className="text-gray-500 text-xs text-center capitalize">
+                                            Mulai dari
+                                        </p>
+                                        <h2 className="text-center my-3 font-bold">
+                                            <FormaterRupiah
+                                                number={row.harga}
+                                            />
+                                        </h2>
+                                        <div className="mt-5 flex justify-center mx-5">
+                                            <div
+                                                onClick={() =>
+                                                    handleEditFpv(row.id)
+                                                }
+                                            >
+                                                <Button className={"w-32"}>
+                                                    Edit
+                                                </Button>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDeleteFpv(row.id)
+                                                }
+                                                className="ml-3"
+                                            >
+                                                <Button className={"w-32"}>
+                                                    Hapus
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <h1 className="text-xl font-bold my-10">Paket FPV</h1>
-                        <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                            <div className="p-5 rounded-lg shadow-lg">
-                                <h1
-                                    className={`transition-all duration-300 text-center font-bold uppercase`}
-                                >
-                                    paket bronze
-                                </h1>
-                                <p
-                                    className={`transition-all duration-300 mt-5 md:mt-7 text-justify text-xs `}
-                                >
-                                    Kebutuhan Dokumentasi seperti Foto Video
-                                    saat ngejeep Lava Tour Merapi, VW Borobudur,
-                                    Pantai Gunung Kidul, atau Kebutuhan ngdrone
-                                    Event dan lainnya. dengan 1 Baterai dan 1
-                                    Lokasi terbang 1 Baterai Terbang 15-30 Menit
-                                    Pilot / Operator Unlimited Foto Video Output
-                                    File Mentah Pilot Stanby 1-2 Jam 1 Lokasi
-                                </p>
-                                <ul
-                                    className={`transition-all duration-300 list-disc list-inside text-xs `}
-                                >
-                                    <li className="mt-2">1 Baterai</li>
-                                    <li>Terbang 15-30 Menit</li>
-                                    <li>Pilot/Operator</li>
-                                    <li>Unlimited Foto Video</li>
-                                    <li>Output File Mentah</li>
-                                    <li>Pilot Stand By 1-2 Jam</li>
-                                    <li>1 Lokasi</li>
-                                </ul>
-                                <p
-                                    className={`transition-all duration-300 my-2 text-center text-xs `}
-                                >
-                                    Mulai dari
-                                </p>
-                                <h2
-                                    className={`transition-all duration-300 my-2 text-center font-bold`}
-                                >
-                                    Rp.750.000,00
-                                </h2>
-                                <button
-                                    className={`transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                >
-                                    Edit
-                                </button>
+                        <div className="mt-10">
+                            <HeaderSubText nama={"Paket FPV"} />
+                            <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
+                                {fpv.map((row, index) => (
+                                    <div
+                                        className="transition-all duration-500 p-5 rounded-lg shadow-md hover:shadow-lg"
+                                        key={index}
+                                    >
+                                        <h1 className="uppercase font-bold text-center">
+                                            {row.nama}
+                                        </h1>
+                                        <p className="text-gray-500 text-xs mt-5 h-20 text-justify">
+                                            {row.deskripsi}
+                                        </p>
+                                        <ul className="text-gray-500 list-inside list-disc text-xs mb-5">
+                                            <li className="mt-2">
+                                                {row.jumlah_baterai}
+                                            </li>
+                                            <li>{row.jam_terbang}</li>
+                                            <li>{row.operator}</li>
+                                            <li>{row.video}</li>
+                                            <li>{row.output}</li>
+                                            <li>{row.jam_pilot}</li>
+                                            <li>{row.lokasi}</li>
+                                        </ul>
+                                        <p className="text-gray-500 text-xs text-center capitalize">
+                                            Mulai dari
+                                        </p>
+                                        <h2 className="text-center my-3 font-bold">
+                                            <FormaterRupiah
+                                                number={row.harga}
+                                            />
+                                        </h2>
+                                        <div className="mt-5 flex justify-center mx-5">
+                                            <div
+                                                onClick={() =>
+                                                    handleEditArial(row.id)
+                                                }
+                                            >
+                                                <Button className={"w-32"}>
+                                                    Edit
+                                                </Button>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDeleteAerial(row.id)
+                                                }
+                                                className="ml-3"
+                                            >
+                                                <Button className={"w-32"}>
+                                                    Hapus
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         <div className="my-10">
-                            <h1 className="font-bold text-xl mb-10">Blog</h1>
+                            <h1 className="font-bold mb-10">Blog</h1>
                             <div className="grid grid-cols-2 gap-5 mr-5">
-                                <div className="mr-5 font-medium p-5 shadow-lg rounded-lg">
-                                    <div className="">
-                                        <p className="text-gray-500 text-xs mb-3">
-                                            {" "}
-                                            25 Mei 2024 | 15.00 WIB |
-                                            Purbalingga | Alun-alun Purbalingga.
-                                        </p>
+                                {blogs.map((row, index) => (
+                                    <div key={index} className="">
+                                        <div className="mx-3 flex text-[10px] my-3 text-gray-500 capitalize">
+                                            <DateFormater
+                                                isoDate={row.created_at}
+                                            />
+                                            | {row.user.nama} | {row.nama}
+                                        </div>
                                         <img
-                                            src="profil.jpg"
+                                            src={url + row.gambar}
                                             alt=""
                                             className="w-full h-[300px] object-cover rounded-lg"
                                         />
-                                        <h1 className="font-bold my-2 text-xl">
-                                            Alun-alun Purbalingga
+                                        <h1 className="mx-3 font-bold my-2 capitalize">
+                                            {row.nama}
                                         </h1>
-                                        <p className="text-gray-500 text-xs mb-3">
-                                            Oleh Mizan Story.id
+                                        <p className="mx-3 text-gray-500 text-[10px] mb-3 capitalize">
+                                            Oleh {row.user.nama}
                                         </p>
-                                        <p className="text-xs text-justify indent-8 font-light">
-                                            Alun-alun Purbalingga adalah sebuah
-                                            ruang terbuka yang menjadi pusat
-                                            kegiatan sosial, budaya, dan ekonomi
-                                            di Kota Purbalingga, Jawa Tengah,
-                                            Indonesia. Sebagai salah satu
-                                            alun-alun yang terkenal di wilayah
-                                            tersebut, Alun-alun Purbalingga
-                                            sering menjadi tempat berkumpulnya
-                                            masyarakat setempat untuk berbagai
-                                            kegiatan seperti olahraga, seni dan
-                                            budaya, serta perayaan acara
-                                            tertentu.
+                                        <p className="mx-3 text-xs text-justify indent-8 font-light h-10">
+                                            {row.deskripsi}
                                         </p>
-                                        <a href="/editfoto">
-                                            <button
-                                                className={`my-5 transition-all duration-300 p-2 w-full font-bold text-xs md:text-sm bg-black text-white rounded-lg`}
-                                            >
-                                                Edit
-                                            </button>
-                                        </a>
+                                        <div className="mt-5 px-2 text-[10px] flex justify-between items-center">
+                                            <div className="flex">
+                                                <span className="material-symbols-outlined text-xs text-gray-500">
+                                                    visibility
+                                                </span>
+                                                <p className="ml-3 text-gray-500 w-20 truncate">
+                                                    {row.viewer.toLocaleString()}{" "}
+                                                    views
+                                                </p>
+                                            </div>
+                                            <div className="flex">
+                                                <div
+                                                    onClick={() =>
+                                                        handleEditBlog(row.id)
+                                                    }
+                                                >
+                                                    <Button className={"w-20"}>
+                                                        Edit
+                                                    </Button>
+                                                </div>
+                                                <div
+                                                    onClick={() =>
+                                                        handleDeleteBlog(row.id)
+                                                    }
+                                                    className="ml-3"
+                                                >
+                                                    <Button className={"w-20"}>
+                                                        Hapus
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>
+                    {openCreatePaket && (
+                        <PopOver>
+                            <div className="relative">
+                                <div
+                                    className="absolute top-2 right-2 z-50 "
+                                    onClick={() =>
+                                        setOpenCreatePaket(!openCreatePaket)
+                                    }
+                                >
+                                    <CloseButton />
+                                </div>
+                                <CreatePaket />
+                            </div>
+                        </PopOver>
+                    )}
+                    {openEditAerial && (
+                        <PopOver>
+                            <div className="relative">
+                                <div
+                                    className="absolute top-2 right-2 z-50 "
+                                    onClick={() =>
+                                        setOpenEditAerial(!openEditAerial)
+                                    }
+                                >
+                                    <CloseButton />
+                                </div>
+                                <EditPaket paket={selectedAerial} />
+                            </div>
+                        </PopOver>
+                    )}
+                    {openEditFpv && (
+                        <PopOver>
+                            <div className="relative">
+                                <div
+                                    className="absolute top-2 right-2 z-50 "
+                                    onClick={() => setOpenEditFpv(!openEditFpv)}
+                                >
+                                    <CloseButton />
+                                </div>
+                                <EditPaket paket={selectedFpv} />
+                            </div>
+                        </PopOver>
+                    )}
+                    {openCreateBlog && (
+                        <PopOver>
+                            <div className="relative">
+                                <div
+                                    className="absolute top-2 right-2 z-50 "
+                                    onClick={() =>
+                                        setOpenCreateBlog(!openCreateBlog)
+                                    }
+                                >
+                                    <CloseButton />
+                                </div>
+                                <CreateBlog />
+                            </div>
+                        </PopOver>
+                    )}
+                    {openEditBlog && (
+                        <PopOver>
+                            <div className="relative">
+                                <div
+                                    className="absolute top-2 right-2 z-50 "
+                                    onClick={() =>
+                                        setOpenEditBlog(!openEditBlog)
+                                    }
+                                >
+                                    <CloseButton />
+                                </div>
+                                <EditBlog blog={selectedBlog} />
+                            </div>
+                        </PopOver>
+                    )}
                 </div>
             </div>
         </div>

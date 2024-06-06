@@ -34,7 +34,7 @@ function CreateBlog() {
             formData.append("nama", nama);
             formData.append("deskripsi", deskripsi);
 
-            await axios.post("http://127.0.0.1:8000/tambahfoto", formData, {
+            await axios.post("http://127.0.0.1:8000/tambahblog", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -59,7 +59,7 @@ function CreateBlog() {
                             onClick={() => window.location.reload()}
                             className="text-center mt-5"
                         >
-                            <Button>ok</Button>
+                            <Button className={"w-32"}>ok</Button>
                         </div>
                     </Modal>
                 </div>
@@ -110,6 +110,7 @@ function CreateBlog() {
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Nama"
+                        maxLength={25}
                         required
                     />
                     <TextAreaInput
@@ -118,7 +119,7 @@ function CreateBlog() {
                         value={deskripsi}
                         onChange={(e) => setDeskripsi(e.target.value)}
                         placeholder="Deskripsi"
-                        maxLength={50}
+                        maxLength={100}
                         required
                     ></TextAreaInput>
                     <Button>Submit</Button>

@@ -34,7 +34,7 @@ function CreateVideo() {
             formData.append("nama", nama);
             formData.append("deskripsi", deskripsi);
 
-            await axios.post("http://127.0.0.1:8000/tambahfoto", formData, {
+            await axios.post("http://127.0.0.1:8000/tambahvideo", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -59,7 +59,7 @@ function CreateVideo() {
                             onClick={() => window.location.reload()}
                             className="text-center mt-5"
                         >
-                            <Button>ok</Button>
+                            <Button className={"w-32"}>ok</Button>
                         </div>
                     </Modal>
                 </div>
@@ -74,6 +74,7 @@ function CreateVideo() {
                 >
                     <div className={`${imagePreview ? "hidden" : "block"}`}>
                         <ImagePreviewInput
+                            type="file"
                             nama="gambar"
                             onChange={handleImageChange}
                         />

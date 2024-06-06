@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class VideoController extends Controller
@@ -28,7 +30,22 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jumlahData = Video::where('user_id', auth()->id())->count();
+
+        if ($jumlahData >= 10) {
+            return Inertia::location("/galeri");
+        }
+        $validateddata = $request->validate([
+            'gambar' => 'file',
+            'nama' => 'required',
+            'deskripsi' => 'required',
+        ]);
+        $validateddata["user_id"] = auth()->id();
+        if ($request->file('gambar')) {
+            $validateddata['gambar'] = $request->file('gambar')->store('video');
+        }
+
+        Video::create($validateddata);
     }
 
     /**
@@ -36,7 +53,8 @@ class VideoController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render("Backend/Video/EditVideo"); //
+        $foto = Video::find($id);
+        return response()->json($foto); //
     }
 
     /**
@@ -52,7 +70,21 @@ class VideoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'gambar' => 'file',
+            'nama' => 'required',
+            'deskripsi' => 'required',
+        ]);
+
+        if ($request->file('gambar')) {
+            if ($request->gambar_lama) {
+                Storage::delete($request->gambar_lama);
+            }
+            $validatedData['gambar'] = $request->file('gambar')->store('video');
+        }
+
+        Video::findOrFail($id)->update($validatedData);
+        return Inertia::location("/galeri");
     }
 
     /**
@@ -60,6 +92,10 @@ class VideoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $video = Video::find($id);
+        if ($video->gambar) {
+            Storage::delete($video->gambar);
+        }
+        $video->delete();
     }
 }

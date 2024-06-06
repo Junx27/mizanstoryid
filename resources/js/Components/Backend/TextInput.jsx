@@ -1,7 +1,7 @@
 import React from "react";
 
 function TextInput(props) {
-    const { type, name, value, onChange, placeholder } = props;
+    const { type, name, value, onChange, placeholder, maxLength } = props;
 
     return (
         <input
@@ -10,7 +10,8 @@ function TextInput(props) {
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="my-3 text-xs p-2 rounded-lg border border-blue-500"
+            maxLength={maxLength}
+            className="w-full my-3 text-xs p-2 rounded border border-blue-500"
             required
         />
     );

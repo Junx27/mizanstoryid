@@ -1,84 +1,101 @@
-import Footer from "@/Components/Frontend/Footer";
-import Navbar from "@/Components/Frontend/Navbar";
-import React, { useState } from "react";
-
-function Blog() {
-    const [open, setOpen] = useState(false);
+import Button from "@/Components/Backend/Button";
+import CloseButton from "@/Components/Backend/CloseButton";
+import DateFormater from "@/Components/Backend/DateFormater";
+import SidebarKonsumen from "@/Components/Frontend/SidebarUser";
+import PopOver from "@/Components/PopOver";
+import { api } from "@/Data/Api";
+import { url } from "@/Data/Url";
+import { useForm } from "@inertiajs/inertia-react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import UpdateBlog from "./Controller/UpdateBlog";
+function Blog({ blogs }) {
+    const [openBlog, setOpenBlog] = useState(false);
+    const [selectedBlog, setSelectedBlog] = useState();
+    const handleEditBlog = async (id) => {
+        try {
+            const response = await axios.get(`${api}viewblog/${id}`);
+            setSelectedBlog(response.data);
+            setOpenBlog(true);
+        } catch (error) {
+            console.error("Error fetching foto data:", error);
+        }
+    };
     return (
         <div>
-            <Navbar />
-            <div className="mx-5 md:mx-20 my-10">
-                <div className="grid grid-cols-12 gap-0 md:gap-10">
-                    <div className="col-span-12 md:col-span-10">
-                        <div className="">
-                            <p className="text-gray-500 text-xs mb-3">
-                                {" "}
-                                25 Mei 2024 | 15.00 WIB | Purbalingga |
-                                Alun-alun Purbalingga.
-                            </p>
+            <SidebarKonsumen />
+            <div className="ml-[150px] pt-10">
+                <div>
+                    <h1 className="transition-all duration-100 font-bold text-xl text-center py-2">
+                        Blog Mizan Story.Id
+                    </h1>
+                </div>
+                <p className="text-gray-500 text-xs text-center mb-5">
+                    Gambar diambil dengan menggunakan drone AERIAL dan drone FPV
+                </p>
+                <div className="flex flex-row overflow-x-auto">
+                    {blogs.map((row, index) => (
+                        <div
+                            key={index}
+                            className="mx-3"
+                            onClick={() => handleEditBlog(row.id)}
+                        >
+                            <Button
+                                className={
+                                    "w-32 truncate capitalize text-[8px]"
+                                }
+                            >
+                                {row.nama}
+                            </Button>
+                        </div>
+                    ))}
+                </div>
+                <div className="grid grid-cols-3 gap-10 mr-5 mt-3">
+                    {blogs.map((row, index) => (
+                        <div
+                            key={index}
+                            className=""
+                            onClick={() => handleEditBlog(row.id)}
+                        >
+                            <div className="mx-3 flex text-[10px] my-3 text-gray-500 capitalize">
+                                <DateFormater isoDate={row.created_at} />|{" "}
+                                {row.user.nama} | {row.nama}
+                            </div>
                             <img
-                                src="profil.jpg"
+                                src={url + row.gambar}
                                 alt=""
-                                className="w-full h-[300px] md:h-[600px] object-cover"
+                                className="transition-all duration-500 w-full h-[250px] object-cover rounded-lg hover:rounded-sm hover:brightness-90"
                             />
-                            <h1 className="font-bold my-4 text-xl md:text-2xl">
-                                Alun-alun Purbalingga
+                            <h1 className="mx-3 font-bold mb-2 mt-3 capitalize">
+                                {row.nama}
                             </h1>
-                            <p className="text-gray-500 text-[10px] md:text-xs my-3">
-                                Oleh Mizan Story.id
+                            <p className="mx-3 text-gray-500 text-[10px] mb-3 capitalize">
+                                Oleh {row.user.nama}
                             </p>
-                            <p className="text-xs md:text-sm text-justify indent-8">
-                                Alun-alun Purbalingga adalah sebuah ruang
-                                terbuka yang menjadi pusat kegiatan sosial,
-                                budaya, dan ekonomi di Kota Purbalingga, Jawa
-                                Tengah, Indonesia. Sebagai salah satu alun-alun
-                                yang terkenal di wilayah tersebut, Alun-alun
-                                Purbalingga sering menjadi tempat berkumpulnya
-                                masyarakat setempat untuk berbagai kegiatan
-                                seperti olahraga, seni dan budaya, serta
-                                perayaan acara tertentu. Alun-alun ini biasanya
-                                dikelilingi oleh bangunan-bangunan penting
-                                seperti kantor pemerintahan, masjid, atau
-                                tempat-tempat ibadah lainnya. Selain itu, di
-                                sekitar alun-alun sering terdapat pedagang kaki
-                                lima yang menjajakan berbagai jenis makanan dan
-                                minuman, serta barang-barang kerajinan dan
-                                souvenir. Alun-alun Purbalingga juga sering
-                                digunakan untuk acara-acara kota seperti pasar
-                                malam, festival budaya, konser musik, dan
-                                kegiatan serupa lainnya. Tempat ini menjadi
-                                pusat kehidupan sosial dan budaya di kota
-                                tersebut, yang menjadikannya ikonik dan berharga
-                                bagi penduduk setempat serta pengunjung dari
-                                luar kota.
+                            <p className="mx-3 text-[10px] text-justify indent-8 font-light h-5">
+                                {row.deskripsi}
                             </p>
-                            <div className="relative flex justify-end">
-                                <button
-                                    className="transition-all duration-500 z-10 mt-20 bg-black p-2 text-white pl-3 hover:pl-2 text-xs md:text-sm"
-                                    onMouseEnter={() => setOpen(true)}
-                                    onMouseLeave={() => setOpen(false)}
-                                >
-                                    Selanjutnya
-                                </button>
-                                <button
-                                    className={`z-0 h-8 md:h-10 transition-all duration-500 absolute mt-20 bg-blue-400 p-2  ${
-                                        open ? "w-[100px] md:w-32" : "w-0"
-                                    }`}
-                                ></button>
+                            <div className="mt-5 px-2 text-[10px] flex justify-between items-center">
+                                <div className="flex">
+                                    <span className="material-symbols-outlined text-xs text-gray-500">
+                                        visibility
+                                    </span>
+                                    <p className="ml-3 text-gray-500 w-20 truncate">
+                                        {row.viewer.toLocaleString()} views
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-span-12 md:col-span-2 my-10 md:my-0">
-                        <h1 className="font-bold">Daftar Blog:</h1>
-                        <ul className="list-disc list-inside">
-                            <li className="text-blue-400 my-2 caplitalize text-sm truncate">
-                                festival balon wonosobo
-                            </li>
-                        </ul>
-                    </div>
+                    ))}
                 </div>
+                {openBlog && (
+                    <PopOver>
+                        <div className="relative">
+                            <UpdateBlog blog={selectedBlog} />
+                        </div>
+                    </PopOver>
+                )}
             </div>
-            <Footer />
         </div>
     );
 }
