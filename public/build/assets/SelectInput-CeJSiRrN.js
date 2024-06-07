@@ -1,0 +1,1 @@
+import{j as r}from"./app-D5IJSCvg.js";function x({children:t,value:e,onChange:s}){return r.jsx("select",{className:"text-xs w-full bg-white px-4 py-2 pr-8 rounded-lg my-2",value:e,onChange:s,children:t})}export{x as S};

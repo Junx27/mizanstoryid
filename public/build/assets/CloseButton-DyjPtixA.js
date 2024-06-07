@@ -1,0 +1,1 @@
+import{j as o}from"./app-D5IJSCvg.js";function r(){return o.jsx("div",{children:o.jsx("span",{className:"transition-all duration-500 material-symbols-outlined shadow hover:text-white rounded hover:bg-red-500 cursor-pointer hover:scale-[102%] hover:shadow-lg",children:"close"})})}export{r as C};
