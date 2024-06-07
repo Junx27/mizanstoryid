@@ -1,1 +1,0 @@
-import{j as a}from"./app-DIXEbt7d.js";function i(s){const{nama:e,onChange:n,type:m}=s;return a.jsxs("div",{className:"my-3 w-[300px]",children:[a.jsx("label",{htmlFor:e,children:a.jsx("img",{src:"gallery.png",alt:"",className:"w-[250px] mx-auto"})}),a.jsx("input",{type:m,name:e,id:e,onChange:n,accept:"image/*",className:"hidden"})]})}export{i as I};

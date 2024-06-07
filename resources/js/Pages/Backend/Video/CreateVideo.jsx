@@ -5,6 +5,7 @@ import TextInput from "@/Components/Backend/TextInput";
 import TextAreaInput from "@/Components/Backend/TextArea";
 import ImagePreviewInput from "@/Components/Backend/ImagePreviewInput";
 import axios from "axios";
+import { api } from "@/Data/Api";
 
 function CreateVideo() {
     const [gambar, setGambar] = useState(null);
@@ -34,7 +35,7 @@ function CreateVideo() {
             formData.append("nama", nama);
             formData.append("deskripsi", deskripsi);
 
-            await axios.post("http://127.0.0.1:8000/tambahvideo", formData, {
+            await axios.post(`${api}tambahvideo`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

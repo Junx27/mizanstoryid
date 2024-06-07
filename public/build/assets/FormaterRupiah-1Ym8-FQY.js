@@ -1,1 +1,0 @@
-import{j as o}from"./app-DIXEbt7d.js";function m({number:r}){const t=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",minimumFractionDigits:2}).format(n);return o.jsx("div",{children:t(r)})}export{m as F};

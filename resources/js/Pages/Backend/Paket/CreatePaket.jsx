@@ -5,6 +5,7 @@ import TextInput from "@/Components/Backend/TextInput";
 import TextAreaInput from "@/Components/Backend/TextArea";
 import axios from "axios";
 import SelectInput from "@/Components/Backend/SelectInput";
+import { api } from "@/Data/Api";
 
 function CreatePaket() {
     const [isSuccess, setIsSuccess] = useState(false);
@@ -35,7 +36,7 @@ function CreatePaket() {
             formData.append("lokasi", lokasi);
             formData.append("harga", harga);
             formData.append("deskripsi", deskripsi);
-            await axios.post("http://127.0.0.1:8000/tambahpaket", formData, {
+            await axios.post(`${api}tambahpaket`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

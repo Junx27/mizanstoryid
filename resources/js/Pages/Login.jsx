@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "@inertiajs/inertia-react";
-import { Inertia } from "@inertiajs/inertia";
 import Button from "@/Components/Backend/Button";
 import CloseButton from "@/Components/Backend/CloseButton";
 
@@ -24,7 +23,7 @@ function Login() {
         <div className="bg-blue-400 h-screen py-32">
             <form
                 onSubmit={handleSubmit}
-                className="relative mx-5 md:mx-auto p-2 w-[390px] h-full md:w-[400px] md:h-[500px] bg-white rounded-lg text-xs"
+                className="relative mx-auto p-2 w-[320px] h-full md:w-[400px] md:h-[500px] bg-white rounded-lg text-xs"
             >
                 <img
                     src="logo.png"

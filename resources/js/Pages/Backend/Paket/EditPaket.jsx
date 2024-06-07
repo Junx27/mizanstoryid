@@ -5,7 +5,6 @@ import Button from "@/Components/Backend/Button";
 import TextInput from "@/Components/Backend/TextInput";
 import TextAreaInput from "@/Components/Backend/TextArea";
 import SelectInput from "@/Components/Backend/SelectInput";
-import { url } from "@/Data/Url";
 
 function EditPaket({ paket }) {
     const [isSuccess, setIsSuccess] = useState(false);

@@ -3,7 +3,6 @@ import { useForm } from "@inertiajs/inertia-react";
 import Modal from "@/Components/Backend/Modal";
 import Button from "@/Components/Backend/Button";
 import TextInput from "@/Components/Backend/TextInput";
-import TextAreaInput from "@/Components/Backend/TextArea";
 import { url } from "@/Data/Url";
 
 function EditPofile({ profile }) {

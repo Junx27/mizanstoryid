@@ -5,7 +5,6 @@ import CloseButton from "@/Components/Backend/CloseButton";
 import ProgressBar from "@/Components/Backend/ProgressBar";
 import Sidebar from "@/Components/Backend/Sidebar";
 import PopOver from "@/Components/PopOver";
-import { Inertia, navigate } from "@inertiajs/inertia";
 import React, { useState } from "react";
 import EditPofile from "./Profil/EditPofile";
 import { url } from "@/Data/Url";
