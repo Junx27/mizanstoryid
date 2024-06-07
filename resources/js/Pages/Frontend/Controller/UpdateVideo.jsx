@@ -21,11 +21,15 @@ function UpdateVideo({ video }) {
                 onChange={(e) => setData("viewer", e.target.value)}
                 className="hidden"
             />
-            <img
-                src={url + video.gambar}
-                alt=""
-                className="w-[1200px] h-[720px] object-cover rounded-lg"
-            />
+            <video
+                controls
+                className="w-[600px] h-[300px] md:w-[1200px] md:h-[720px] object-cover rounded-lg"
+                autoPlay
+            >
+                <source src={url + video.gambar} type="video/mp4" />
+                Browser Anda tidak mendukung pemutaran video.
+            </video>
+
             <button type="submit" className="absolute top-3 right-3">
                 <CloseButton />
             </button>

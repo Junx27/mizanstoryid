@@ -14,8 +14,10 @@ import CreatePaket from "./Paket/CreatePaket";
 import EditPaket from "./Paket/EditPaket";
 import HeaderSubText from "@/Components/Backend/HeaderSubText";
 import FormaterRupiah from "@/Components/Backend/FormaterRupiah";
+import Modal from "@/Components/Backend/Modal";
 
 function Menu({ blogs, aerial, fpv }) {
+    const [isSuccess, setIsSuccess] = useState(false);
     const [openCreateBlog, setOpenCreateBlog] = useState();
     const [openCreatePaket, setOpenCreatePaket] = useState();
     const [openEditBlog, setOpenEditBlog] = useState();
@@ -27,7 +29,7 @@ function Menu({ blogs, aerial, fpv }) {
     const totalItemsFpv = 3;
     const completedItemsFpv = fpv.length;
     const progressFpv = (completedItemsFpv / totalItemsFpv) * 100;
-    const totalItemsBlog = 2000;
+    const totalItemsBlog = 200;
     const completedItemsBlog = blogs.length;
     const progressBlog = (completedItemsBlog / totalItemsBlog) * 100;
     const AERIAL = "Paket AERIAL";
@@ -48,7 +50,7 @@ function Menu({ blogs, aerial, fpv }) {
     const handleDeleteBlog = async (id) => {
         try {
             await axios.delete(`${api}hapusblog${id}`);
-            window.location.reload();
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
         }
@@ -65,7 +67,7 @@ function Menu({ blogs, aerial, fpv }) {
     const handleDeleteAerial = async (id) => {
         try {
             await axios.delete(`${api}hapuspaket${id}`);
-            window.location.reload();
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
         }
@@ -82,7 +84,7 @@ function Menu({ blogs, aerial, fpv }) {
     const handleDeleteFpv = async (id) => {
         try {
             await axios.delete(`${api}hapuspaket${id}`);
-            window.location.reload();
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
         }
@@ -92,9 +94,26 @@ function Menu({ blogs, aerial, fpv }) {
             <div>
                 <Sidebar />
             </div>
-            <div className="ml-[150px] pt-20">
-                <div className="flex">
-                    <div className="fixed w-[300px] p-10 shadow-lg rounded-lg">
+            {isSuccess && (
+                <PopOver>
+                    <div className="relative w-[300px] h-screen mt-32">
+                        <Modal>
+                            <h1 className="text-xs text-center">
+                                Data berhasil dihapus
+                            </h1>
+                            <div
+                                onClick={() => window.location.reload()}
+                                className="text-center mt-5"
+                            >
+                                <Button className={"w-32"}>ok</Button>
+                            </div>
+                        </Modal>
+                    </div>
+                </PopOver>
+            )}
+            <div className="pt-5 mx-5 md:mx-0 md:ml-[150px] md:pt-20">
+                <div className="flex flex-col md:flex-row">
+                    <div className="md:fixed w-full md:w-[300px] p-10 shadow-lg rounded-lg">
                         <div className="my-3">
                             <ProgressBar
                                 progress={progressAerial}
@@ -135,22 +154,36 @@ function Menu({ blogs, aerial, fpv }) {
                             <Button className={"w-full"}>Tambah blog</Button>
                         </div>
                     </div>
-                    <div className="ml-[350px]">
+                    <div className="mt-10 md:mt-0 md:ml-[350px]">
                         <div>
                             <HeaderSubText nama={"Paket AERIAL"} />
-                            <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
+                            <div className="grid grid-col-1 md:grid-cols-3 gap-5 md:mr-5 font-medium">
                                 {aerial.map((row, index) => (
                                     <div
                                         className="transition-all duration-500 p-5 rounded-lg shadow-md hover:shadow-lg"
                                         key={index}
                                     >
-                                        <h1 className="uppercase font-bold text-center">
+                                        <h1
+                                            className={`uppercase font-bold text-center mb-10 mt-5 p-2 rounded-md ${
+                                                row.nama === "PAKET BRONZE"
+                                                    ? "bg-[#F7EFE5]"
+                                                    : ""
+                                            } ${
+                                                row.nama === "PAKET SILVER"
+                                                    ? "bg-[#F1EAFF]"
+                                                    : ""
+                                            } ${
+                                                row.nama === "PAKET GOLD"
+                                                    ? "bg-[#fddcc5]"
+                                                    : ""
+                                            }`}
+                                        >
                                             {row.nama}
                                         </h1>
-                                        <p className="text-gray-500 text-xs mt-5 h-20 text-justify">
+                                        <p className="text-gray-500 text-[10px] mt-5 h-20 text-justify indent-8">
                                             {row.deskripsi}
                                         </p>
-                                        <ul className="text-gray-500 list-inside list-disc text-xs mb-5">
+                                        <ul className="text-gray-500 list-inside list-disc text-[10px] mb-5">
                                             <li className="mt-2">
                                                 {row.jumlah_baterai}
                                             </li>
@@ -161,7 +194,7 @@ function Menu({ blogs, aerial, fpv }) {
                                             <li>{row.jam_pilot}</li>
                                             <li>{row.lokasi}</li>
                                         </ul>
-                                        <p className="text-gray-500 text-xs text-center capitalize">
+                                        <p className="text-gray-500 text-[10px] text-center capitalize">
                                             Mulai dari
                                         </p>
                                         <h2 className="text-center my-3 font-bold">
@@ -175,7 +208,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                     handleEditFpv(row.id)
                                                 }
                                             >
-                                                <Button className={"w-32"}>
+                                                <Button className={"w-20"}>
                                                     Edit
                                                 </Button>
                                             </div>
@@ -185,7 +218,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                 }
                                                 className="ml-3"
                                             >
-                                                <Button className={"w-32"}>
+                                                <Button className={"w-20"}>
                                                     Hapus
                                                 </Button>
                                             </div>
@@ -196,19 +229,33 @@ function Menu({ blogs, aerial, fpv }) {
                         </div>
                         <div className="mt-10">
                             <HeaderSubText nama={"Paket FPV"} />
-                            <div className="grid grid-cols-3 gap-5 mr-5 font-medium">
+                            <div className="grid grid-col-1 md:grid-cols-3 gap-5 md:mr-5 font-medium">
                                 {fpv.map((row, index) => (
                                     <div
                                         className="transition-all duration-500 p-5 rounded-lg shadow-md hover:shadow-lg"
                                         key={index}
                                     >
-                                        <h1 className="uppercase font-bold text-center">
+                                        <h1
+                                            className={`uppercase font-bold text-center mb-10 mt-5 p-2 rounded-md ${
+                                                row.nama === "PAKET BRONZE"
+                                                    ? "bg-[#F7EFE5]"
+                                                    : ""
+                                            } ${
+                                                row.nama === "PAKET SILVER"
+                                                    ? "bg-[#F1EAFF]"
+                                                    : ""
+                                            } ${
+                                                row.nama === "PAKET GOLD"
+                                                    ? "bg-[#fddcc5]"
+                                                    : ""
+                                            }`}
+                                        >
                                             {row.nama}
                                         </h1>
-                                        <p className="text-gray-500 text-xs mt-5 h-20 text-justify">
+                                        <p className="text-gray-500 text-[10px] mt-5 h-20 text-justify indent-8">
                                             {row.deskripsi}
                                         </p>
-                                        <ul className="text-gray-500 list-inside list-disc text-xs mb-5">
+                                        <ul className="text-gray-500 list-inside list-disc text-[10px] mb-5">
                                             <li className="mt-2">
                                                 {row.jumlah_baterai}
                                             </li>
@@ -219,7 +266,7 @@ function Menu({ blogs, aerial, fpv }) {
                                             <li>{row.jam_pilot}</li>
                                             <li>{row.lokasi}</li>
                                         </ul>
-                                        <p className="text-gray-500 text-xs text-center capitalize">
+                                        <p className="text-gray-500 text-[10px] text-center capitalize">
                                             Mulai dari
                                         </p>
                                         <h2 className="text-center my-3 font-bold">
@@ -233,7 +280,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                     handleEditArial(row.id)
                                                 }
                                             >
-                                                <Button className={"w-32"}>
+                                                <Button className={"w-20"}>
                                                     Edit
                                                 </Button>
                                             </div>
@@ -243,7 +290,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                 }
                                                 className="ml-3"
                                             >
-                                                <Button className={"w-32"}>
+                                                <Button className={"w-20"}>
                                                     Hapus
                                                 </Button>
                                             </div>
@@ -254,7 +301,7 @@ function Menu({ blogs, aerial, fpv }) {
                         </div>
                         <div className="my-10">
                             <h1 className="font-bold mb-10">Blog</h1>
-                            <div className="grid grid-cols-2 gap-5 mr-5">
+                            <div className="grid grid-col-1 md:grid-cols-2 gap-5 md:mr-5 mb-20">
                                 {blogs.map((row, index) => (
                                     <div key={index} className="">
                                         <div className="mx-3 flex text-[10px] my-3 text-gray-500 capitalize">
@@ -274,7 +321,7 @@ function Menu({ blogs, aerial, fpv }) {
                                         <p className="mx-3 text-gray-500 text-[10px] mb-3 capitalize">
                                             Oleh {row.user.nama}
                                         </p>
-                                        <p className="mx-3 text-xs text-justify indent-8 font-light h-10">
+                                        <p className="mx-3 text-[10px] text-justify indent-8 font-light h-10">
                                             {row.deskripsi}
                                         </p>
                                         <div className="mt-5 px-2 text-[10px] flex justify-between items-center">
@@ -293,7 +340,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                         handleEditBlog(row.id)
                                                     }
                                                 >
-                                                    <Button className={"w-20"}>
+                                                    <Button className={"w-12"}>
                                                         Edit
                                                     </Button>
                                                 </div>
@@ -303,7 +350,7 @@ function Menu({ blogs, aerial, fpv }) {
                                                     }
                                                     className="ml-3"
                                                 >
-                                                    <Button className={"w-20"}>
+                                                    <Button className={"w-12"}>
                                                         Hapus
                                                     </Button>
                                                 </div>

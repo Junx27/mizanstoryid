@@ -20,9 +20,9 @@ function Clock() {
     });
 
     return (
-        <div className="mt-10">
-            <h2 className="font-bold mb-4">Hari ini</h2>
-            <p className="text-4xl text-blue-500 font-bold bg-white shadow-lg p-5 w-64 text-center rounded-lg">
+        <div className="mt-3 md:mt-10">
+            <h2 className="font-bold mb-4 text-xs md:text-sm">Hari ini</h2>
+            <p className="text-xl md:text-4xl text-blue-500 font-bold bg-white shadow-lg p-5 w-32 md:w-64 text-center rounded-lg">
                 {formatter.format(time)}
             </p>
         </div>

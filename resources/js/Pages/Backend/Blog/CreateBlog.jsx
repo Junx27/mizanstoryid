@@ -74,6 +74,7 @@ function CreateBlog() {
                 >
                     <div className={`${imagePreview ? "hidden" : "block"}`}>
                         <ImagePreviewInput
+                            type="file"
                             nama="gambar"
                             onChange={handleImageChange}
                         />
@@ -110,6 +111,7 @@ function CreateBlog() {
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Nama"
+                        minLength={5}
                         maxLength={25}
                         required
                     />
@@ -119,6 +121,7 @@ function CreateBlog() {
                         value={deskripsi}
                         onChange={(e) => setDeskripsi(e.target.value)}
                         placeholder="Deskripsi"
+                        minLength={5}
                         maxLength={100}
                         required
                     ></TextAreaInput>

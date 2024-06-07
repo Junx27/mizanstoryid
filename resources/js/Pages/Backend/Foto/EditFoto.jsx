@@ -7,6 +7,7 @@ import TextAreaInput from "@/Components/Backend/TextArea";
 import { url } from "@/Data/Url";
 
 function EditFoto({ foto }) {
+    const [isSuccess, setIsSuccess] = useState(false);
     const { data, setData, post, processing } = useForm({
         _method: "PUT",
         nama: foto.nama,
@@ -29,13 +30,34 @@ function EditFoto({ foto }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSuccess(true);
         post(`/fotoupdate/${foto.id}`);
     };
 
     return (
         <div>
+            {isSuccess && (
+                <div className="relative w-[300px] h-screen mt-32">
+                    <Modal>
+                        <h1 className="text-xs text-center">
+                            Data berhasil diupdate
+                        </h1>
+                        <div
+                            onClick={() => window.location.reload()}
+                            className="text-center mt-5"
+                        >
+                            <Button className={"w-32"}>ok</Button>
+                        </div>
+                    </Modal>
+                </div>
+            )}
             <Modal>
-                <form onSubmit={handleSubmit} className="flex flex-col">
+                <form
+                    onSubmit={handleSubmit}
+                    className={`flex flex-col ${
+                        isSuccess ? "hidden" : "block"
+                    }`}
+                >
                     <label htmlFor="gambar">
                         <img
                             src={imagePreview}
@@ -61,6 +83,8 @@ function EditFoto({ foto }) {
                         value={data.nama}
                         onChange={(e) => setData("nama", e.target.value)}
                         placeholder="Nama"
+                        minLength={5}
+                        maxLength={25}
                         required
                     />
                     <TextAreaInput
@@ -69,6 +93,7 @@ function EditFoto({ foto }) {
                         value={data.deskripsi}
                         onChange={(e) => setData("deskripsi", e.target.value)}
                         placeholder="Deskripsi"
+                        minLength={5}
                         maxLength={50}
                         required
                     />

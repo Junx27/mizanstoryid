@@ -33,28 +33,31 @@ function Portofolio({ fotos, videos }) {
     return (
         <div>
             <SidebarKonsumen />
-            <div className="ml-[150px]">
+            <div className="mx-5 md:mx-0 md:ml-[150px]">
                 <div className="">
-                    <h1 className="font-bold text-xl text-center pt-8 py-2">
+                    <h1 className="font-bold text-sm md:text-xl text-center pt-8 py-2">
                         Dokumentasi Video Mizan Story.Id
                     </h1>
-                    <p className="text-gray-500 text-xs text-center mb-10">
+                    <p className="text-gray-500 text-[10px] md:text-xs text-center md:mb-10">
                         Gambar diambil dengan menggunakan drone AERIAL dan drone
                         FPV
                     </p>
                 </div>
-                <div className="pt-5 flex gap-5 mr-5 overflow-x-auto">
+                <div className="pt-5 flex gap-5 md:mr-5 overflow-x-auto">
                     {videos.map((row, index) => (
                         <div
                             className=""
                             key={index}
                             onClick={() => handleEditVideo(row.id)}
                         >
-                            <div className="w-64">
-                                <img
+                            <div className="w-[300px] md:w-64">
+                                <video
                                     src={url + row.gambar}
                                     alt=""
-                                    className="transition-all duration-500 w-full h-[200px] object-cover rounded hover:rounded-none hover:brightness-90"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    className="transition-all duration-500 w-full h-[230px] md:h-[200px] object-cover rounded hover:rounded-none hover:brightness-90"
                                 />
 
                                 <h1 className="px-2 text-xs capitalize font-bold mt-2">
@@ -64,7 +67,7 @@ function Portofolio({ fotos, videos }) {
                                     {row.deskripsi}
                                 </p>
                                 <div className="px-2 text-[10px] flex justify-between items-center">
-                                    <div className="flex mt-5">
+                                    <div className="flex mt-3">
                                         <span className="material-symbols-outlined text-xs text-gray-500">
                                             visibility
                                         </span>
@@ -77,14 +80,14 @@ function Portofolio({ fotos, videos }) {
                         </div>
                     ))}
                 </div>
-                <h1 className="font-bold text-xl text-center mt-10 my-2">
+                <h1 className="font-bold text-sm md:text-xl text-center mt-10 my-2">
                     Dokumentasi Foto Mizan Story.Id
                 </h1>
-                <p className="text-gray-500 text-xs text-center mb-10">
+                <p className="text-gray-500 text-[10px] md:text-xs text-center md:mb-10">
                     Gambar diambil dengan menggunakan drone AERIAL dan drone FPV
                 </p>
                 <div>
-                    <div className="mt-5 grid grid-cols-4 gap-5 mr-5">
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-5 md:mr-5">
                         {fotos.map((row, index) => (
                             <div
                                 className=""
@@ -95,7 +98,7 @@ function Portofolio({ fotos, videos }) {
                                     <img
                                         src={url + row.gambar}
                                         alt=""
-                                        className="transition-all duration-500 w-full h-[200px] object-cover rounded hover:rounded-none hover:brightness-90"
+                                        className="transition-all duration-500 w-full h-[230px] md:h-[200px] object-cover rounded hover:rounded-none hover:brightness-90"
                                     />
 
                                     <h1 className="px-2 text-xs capitalize font-bold mt-2">
@@ -105,7 +108,7 @@ function Portofolio({ fotos, videos }) {
                                         {row.deskripsi}
                                     </p>
                                     <div className="px-2 text-[10px] flex justify-between items-center">
-                                        <div className="flex mt-5">
+                                        <div className="flex mt-3">
                                             <span className="material-symbols-outlined text-xs text-gray-500">
                                                 visibility
                                             </span>

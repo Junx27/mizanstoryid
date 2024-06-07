@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import Button from "@/Components/Backend/Button";
+import CloseButton from "@/Components/Backend/CloseButton";
 
 function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -22,7 +24,7 @@ function Login() {
         <div className="bg-blue-400 h-screen py-32">
             <form
                 onSubmit={handleSubmit}
-                className="relative mx-5 md:mx-auto p-2 w-[350px] h-full md:w-[500px] md:h-[500px] bg-white text-xs"
+                className="relative mx-5 md:mx-auto p-2 w-[390px] h-full md:w-[400px] md:h-[500px] bg-white rounded-lg text-xs"
             >
                 <img
                     src="logo.png"
@@ -31,15 +33,15 @@ function Login() {
                 />
                 <hr className="mx-10 mb-2 md:mb-5" />
                 <a href="/">
-                    <span className="absolute top-3 right-3 material-symbols-outlined">
-                        close
-                    </span>
+                    <div className="absolute top-3 right-3">
+                        <CloseButton />
+                    </div>
                 </a>
                 <div className="mx-10 pt-5 flex flex-col">
                     <label htmlFor="email">Email</label>
                     <input
                         type="email"
-                        className="p-3 border mt-2 outline-blue-400 text-xs"
+                        className="p-3 border mt-2 outline-blue-400 text-xs rounded-lg"
                         placeholder="Email"
                         name="email"
                         value={data.email}
@@ -54,7 +56,7 @@ function Login() {
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        className="p-3 border mt-2 outline-blue-400 text-xs"
+                        className="p-3 border mt-2 outline-blue-400 text-xs rounded-lg"
                         placeholder="Password"
                         name="password"
                         value={data.password}
@@ -65,14 +67,10 @@ function Login() {
                         <div className="text-red-500">{errors.password}</div>
                     )}
                 </div>
-                <div className="flex justify-center">
-                    <button
-                        type="submit"
-                        disabled={processing}
-                        className="text-white w-full p-3 bg-blue-400 mx-10 mt-10 hover:bg-blue-600"
-                    >
-                        {processing ? "Loading..." : "Masuk"}
-                    </button>
+                <div className="mt-10 flex justify-center">
+                    <Button className={"w-full mx-10 text-xs p-3"}>
+                        Login
+                    </Button>
                 </div>
             </form>
         </div>

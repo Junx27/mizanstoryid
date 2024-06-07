@@ -27,6 +27,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $jumlahData = Pesanan::where('user_id', auth()->id())->count();
+        if ($jumlahData >= 2000) {
+            return Inertia::location("/price");
+        }
         $validatedData = $request->validate([
             'nama' => 'required',
             'kontak' => 'required',

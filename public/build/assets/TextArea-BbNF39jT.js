@@ -1,0 +1,1 @@
+import{j as u}from"./app-DIXEbt7d.js";function l(e){const{name:n,value:r,onChange:t,placeholder:o,maxLength:s}=e;return u.jsx("textarea",{name:n,value:r,onChange:t,placeholder:o,maxLength:s,className:"w-full mt-2 mb-5 text-xs p-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-20",required:!0})}export{l as T};

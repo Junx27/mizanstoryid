@@ -22,13 +22,15 @@ function ProgressBar({
     }, [displayProgress, progress]);
 
     return (
-        <div className="mt-5">
-            <h2 className="text-xl font-bold mb-4">{nama}</h2>
-            <div className="flex justify-between">
+        <div className="mt-3 md:mt-5">
+            <h2 className="text-sm md:text-xl font-bold mb-2 md:mb-4">
+                {nama}
+            </h2>
+            <div className="flex text-xs md:text-sm justify-between">
                 <p>
                     {progressComplete}/{progressValue}
                 </p>
-                <p className="font-bold">{totalProgress}%</p>
+                <p className="text-xs md:text-sm font-bold">{totalProgress}%</p>
             </div>
             <div className="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
                 <div

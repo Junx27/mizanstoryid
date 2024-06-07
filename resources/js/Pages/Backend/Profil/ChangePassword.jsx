@@ -23,6 +23,8 @@ function ChangePassword({ profile }) {
                         name="kontak"
                         onChange={(e) => setData("password", e.target.value)}
                         placeholder="New password"
+                        minLength={5}
+                        maxLength={25}
                         required
                     />
                     <Button disabled={processing}>Submit</Button>

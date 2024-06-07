@@ -84,7 +84,6 @@ class VideoController extends Controller
         }
 
         Video::findOrFail($id)->update($validatedData);
-        return Inertia::location("/galeri");
     }
 
     /**

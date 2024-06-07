@@ -29,12 +29,12 @@ function EditPaket({ paket }) {
         post(`/paketupdate/${paket.id}`);
     };
     return (
-        <div className="w-[600px]">
+        <div className="md:w-[600px]">
             {isSuccess && (
                 <div className="relative w-[300px] h-screen mt-32">
                     <Modal>
                         <h1 className="text-xs text-center">
-                            Data berhasil dimasukan
+                            Data berhasil dipudate
                         </h1>
                         <div
                             onClick={() => window.location.reload()}
@@ -48,7 +48,7 @@ function EditPaket({ paket }) {
             <Modal>
                 <form
                     onSubmit={handleSubmitForm}
-                    className={`flex flex-row ${
+                    className={`flex flex-col md:flex-row ${
                         isSuccess ? "hidden" : "block"
                     }`}
                     content=""
@@ -139,7 +139,7 @@ function EditPaket({ paket }) {
                             </option>
                         </SelectInput>
                     </div>
-                    <div className="ml-5">
+                    <div className="md:ml-5">
                         <SelectInput
                             value={data.output}
                             onChange={(e) => setData("output", e.target.value)}
@@ -190,6 +190,8 @@ function EditPaket({ paket }) {
                             value={data.harga}
                             onChange={(e) => setData("harga", e.target.value)}
                             placeholder="Harga"
+                            minLength={5}
+                            maxLength={200}
                             required
                         />
                         <TextAreaInput
@@ -200,6 +202,7 @@ function EditPaket({ paket }) {
                                 setData("deskripsi", e.target.value)
                             }
                             placeholder="Deskripsi"
+                            minLength={5}
                             maxLength={200}
                             className="text-justify"
                             required

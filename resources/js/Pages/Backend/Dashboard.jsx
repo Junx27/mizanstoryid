@@ -26,7 +26,7 @@ function Dashboard({ user, videos, fotos, blogs, orders, produks }) {
     const totalItemsProduk = 6;
     const completedItemsProduk = produks.length;
     const progressProduk = (completedItemsProduk / totalItemsProduk) * 100;
-    const totalItemsBlog = 2000;
+    const totalItemsBlog = 200;
     const completedItemsBlog = blogs.length;
     const progressBlog = (completedItemsBlog / totalItemsBlog) * 100;
     const totalItemsOrder = 2000;
@@ -60,18 +60,18 @@ function Dashboard({ user, videos, fotos, blogs, orders, produks }) {
             <div>
                 <Sidebar />
             </div>
-            <div className="pt-20 ml-[150px]">
-                <h1 className="text-xl font-bold">
+            <div className="pt-10 mx-5 md:pt-20 md:ml-[150px] md:mx-0">
+                <h1 className="text-xs md:text-xl font-bold">
                     Selamat Datang di Dashboard Admin{" "}
                     <span className="text-blue-500 text-3xl">.</span>
                 </h1>
-                <div className="grid grid-cols-12 gap-10">
-                    <div className="col-span-4">
+                <div className="grid grid-cols-12 gap-0 md:gap-10">
+                    <div className="col-span-12 md:col-span-4">
                         <Clock />
                         <Calender />
                     </div>
-                    <div className="col-span-4 p-10 shadow-lg rounded-lg">
-                        <div className="-mt-10">
+                    <div className="mt-10 md:mt-0 col-span-12 md:col-span-4 p-10 shadow-lg rounded-lg">
+                        <div className="md:-mt-10">
                             <ProgressBar
                                 progress={progressFoto}
                                 nama={foto}
@@ -117,32 +117,36 @@ function Dashboard({ user, videos, fotos, blogs, orders, produks }) {
                             />
                         </div>
                     </div>
-                    <div className="col-span-4 p-5 shadow-lg rounded-lg">
+                    <div className="col-span-12 md:col-span-4 mt-10 md:mt-0 p-5 shadow-lg rounded-lg mb-20 md:mb-0">
                         <img
                             src={url + user.gambar}
                             alt=""
                             className="w-32 h-32 mx-auto rounded-full"
                         />
                         <div className="mt-5">
-                            <h1 className="font-bold text-xl text-center capitalize">
+                            <h1 className="font-bold text-sm md:text-xl text-center capitalize">
                                 {user.nama}
                             </h1>
                             <div className="flex justify-between my-5">
-                                <div className="text-sm text-center shadow p-5">
+                                <div className="text-sm text-center shadow p-5 rounded">
                                     <span className="material-symbols-outlined text-blue-500">
                                         smartphone
                                     </span>
-                                    <p className="py-3">{user.kontak}</p>
+                                    <p className="py-3 text-[10px] md:text-xs">
+                                        {user.kontak}
+                                    </p>
                                 </div>
-                                <div className="text-sm text-center shadow p-5">
+                                <div className="text-sm text-center shadow p-5 rounded">
                                     <span className="material-symbols-outlined text-purple-500">
                                         mail
                                     </span>
-                                    <p className="py-3">{user.email}</p>
+                                    <p className="py-3 text-[10px] md:text-xs">
+                                        {user.email}
+                                    </p>
                                 </div>
                             </div>
                             <div className="mt-5">
-                                <p className="text-xs text-gray-400 text-center mt-20">
+                                <p className="text-[10px] md:text-xs text-gray-400 text-center mt-20">
                                     Copy Right &copy; 2024 Mizan Story.Id
                                     Reserved.
                                 </p>

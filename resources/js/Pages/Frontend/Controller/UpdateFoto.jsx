@@ -24,7 +24,7 @@ function UpdateFoto({ foto }) {
             <img
                 src={url + foto.gambar}
                 alt=""
-                className="w-[1200px] h-[720px] object-cover rounded-lg"
+                className="w-[600px] h-[300px] md:w-[1200px] md:h-[720px] object-cover rounded-lg"
             />
             <button type="submit" className="absolute top-3 right-3">
                 <CloseButton />

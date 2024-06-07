@@ -12,8 +12,10 @@ import EditFoto from "./Foto/EditFoto.jsx";
 import axios from "axios";
 import CreateVideo from "./Video/CreateVideo.jsx";
 import EditVideo from "./Video/EditVideo.jsx";
+import Modal from "@/Components/Backend/Modal.jsx";
 
 function Galeri({ fotos, videos }) {
+    const [isSuccess, setIsSuccess] = useState(false);
     const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openVideo, setOpenVideo] = useState(false);
@@ -41,7 +43,7 @@ function Galeri({ fotos, videos }) {
     const handleDelete = async (id) => {
         try {
             await axios.delete(`${api}hapusfoto${id}`);
-            window.location.reload();
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
         }
@@ -58,18 +60,34 @@ function Galeri({ fotos, videos }) {
     const handleDeleteVideo = async (id) => {
         try {
             await axios.delete(`${api}hapusvideo${id}`);
-            window.location.reload();
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
         }
     };
-
     return (
         <div>
             <div>
                 <Sidebar />
             </div>
-            <div className="ml-[150px] pt-20">
+            {isSuccess && (
+                <PopOver>
+                    <div className="relative w-[300px] h-screen mt-32">
+                        <Modal>
+                            <h1 className="text-xs text-center">
+                                Data berhasil dihapus
+                            </h1>
+                            <div
+                                onClick={() => window.location.reload()}
+                                className="text-center mt-5"
+                            >
+                                <Button className={"w-32"}>ok</Button>
+                            </div>
+                        </Modal>
+                    </div>
+                </PopOver>
+            )}
+            <div className="pt-5 mx-5 md:mx-0 md:ml-[150px] md:pt-20">
                 <div className="flex mb-10">
                     <div className="w-full">
                         <ProgressBar
@@ -92,7 +110,9 @@ function Galeri({ fotos, videos }) {
                 </div>
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="font-bold mb-4">Foto</h1>
+                        <h1 className="text-xs md:text-sm font-bold mb-4">
+                            Foto
+                        </h1>
                     </div>
                     <div className="flex mx-5">
                         {fotos.length < 20 && (
@@ -111,14 +131,14 @@ function Galeri({ fotos, videos }) {
                     </div>
                 </div>
                 <div>
-                    <div className="mt-5 grid grid-cols-4 gap-5 mr-5">
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-5 md:mr-5 mb-20">
                         {fotos.map((row, index) => (
                             <div className="" key={index}>
                                 <div>
                                     <img
                                         src={url + row.gambar}
                                         alt=""
-                                        className="w-full h-[200px] object-cover rounded hover:rounded-none"
+                                        className="w-full h-[250px] md:h-[200px] object-cover rounded hover:rounded-none"
                                     />
 
                                     <h1 className="px-2 text-xs capitalize font-bold mt-2">
@@ -143,7 +163,7 @@ function Galeri({ fotos, videos }) {
                                                     handleEdit(row.id)
                                                 }
                                             >
-                                                <Button className={"w-20"}>
+                                                <Button className={"w-12"}>
                                                     Edit
                                                 </Button>
                                             </div>
@@ -153,7 +173,7 @@ function Galeri({ fotos, videos }) {
                                                 }
                                                 className="ml-3"
                                             >
-                                                <Button className={"w-20"}>
+                                                <Button className={"w-12"}>
                                                     Hapus
                                                 </Button>
                                             </div>
@@ -164,18 +184,22 @@ function Galeri({ fotos, videos }) {
                         ))}
                     </div>
                     <div>
-                        <h1 className="font-bold my-4">Video</h1>
+                        <h1 className="text-xs md:text-sm font-bold my-4">
+                            Video
+                        </h1>
                     </div>
-                    <div className="mt-5 grid grid-cols-4 gap-5 mr-5">
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-5 md:mr-5 mb-20">
                         {videos.map((row, index) => (
                             <div className="" key={index}>
                                 <div>
-                                    <img
+                                    <video
                                         src={url + row.gambar}
                                         alt=""
-                                        className="w-full h-[200px] object-cover rounded hover:rounded-none"
+                                        autoPlay
+                                        muted
+                                        loop
+                                        className="transition-all duration-500 w-full h-[250px] md:h-[200px] object-cover rounded hover:rounded-none hover:brightness-90"
                                     />
-
                                     <h1 className="px-2 text-xs capitalize font-bold mt-2">
                                         {row.nama}
                                     </h1>
@@ -198,7 +222,7 @@ function Galeri({ fotos, videos }) {
                                                     handleEditVideo(row.id)
                                                 }
                                             >
-                                                <Button className={"w-20"}>
+                                                <Button className={"w-12"}>
                                                     Edit
                                                 </Button>
                                             </div>
@@ -208,7 +232,7 @@ function Galeri({ fotos, videos }) {
                                                 }
                                                 className="ml-3"
                                             >
-                                                <Button className={"w-20"}>
+                                                <Button className={"w-12"}>
                                                     Hapus
                                                 </Button>
                                             </div>

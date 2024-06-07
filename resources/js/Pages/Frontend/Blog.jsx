@@ -1,13 +1,11 @@
 import Button from "@/Components/Backend/Button";
-import CloseButton from "@/Components/Backend/CloseButton";
 import DateFormater from "@/Components/Backend/DateFormater";
 import SidebarKonsumen from "@/Components/Frontend/SidebarUser";
 import PopOver from "@/Components/PopOver";
 import { api } from "@/Data/Api";
 import { url } from "@/Data/Url";
-import { useForm } from "@inertiajs/inertia-react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UpdateBlog from "./Controller/UpdateBlog";
 function Blog({ blogs }) {
     const [openBlog, setOpenBlog] = useState(false);
@@ -24,13 +22,13 @@ function Blog({ blogs }) {
     return (
         <div>
             <SidebarKonsumen />
-            <div className="ml-[150px] pt-10">
+            <div className="mx-5 md:mx-0 pt-5 md:ml-[150px] md:pt-10">
                 <div>
-                    <h1 className="transition-all duration-100 font-bold text-xl text-center py-2">
+                    <h1 className="transition-all duration-100 font-bold text-sm md:text-xl text-center py-2">
                         Blog Mizan Story.Id
                     </h1>
                 </div>
-                <p className="text-gray-500 text-xs text-center mb-5">
+                <p className="text-gray-500 text-[10px] md:text-xs text-center mb-5">
                     Gambar diambil dengan menggunakan drone AERIAL dan drone FPV
                 </p>
                 <div className="flex flex-row overflow-x-auto">
@@ -50,7 +48,7 @@ function Blog({ blogs }) {
                         </div>
                     ))}
                 </div>
-                <div className="grid grid-cols-3 gap-10 mr-5 mt-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:mr-5 mt-3">
                     {blogs.map((row, index) => (
                         <div
                             key={index}

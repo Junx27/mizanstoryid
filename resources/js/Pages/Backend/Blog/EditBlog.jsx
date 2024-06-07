@@ -7,6 +7,7 @@ import TextAreaInput from "@/Components/Backend/TextArea";
 import { url } from "@/Data/Url";
 
 function EditBlog({ blog }) {
+    const [isSuccess, setIsSuccess] = useState(false);
     const { data, setData, post, processing } = useForm({
         _method: "PUT",
         nama: blog.nama,
@@ -29,12 +30,33 @@ function EditBlog({ blog }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSuccess(true);
         post(`/blogupdate/${blog.id}`);
     };
     return (
         <div>
+            {isSuccess && (
+                <div className="relative w-[300px] h-screen mt-32">
+                    <Modal>
+                        <h1 className="text-xs text-center">
+                            Data berhasil diupdate
+                        </h1>
+                        <div
+                            onClick={() => window.location.reload()}
+                            className="text-center mt-5"
+                        >
+                            <Button className={"w-32"}>ok</Button>
+                        </div>
+                    </Modal>
+                </div>
+            )}
             <Modal>
-                <form onSubmit={handleSubmit} className="flex flex-col">
+                <form
+                    onSubmit={handleSubmit}
+                    className={`flex flex-col ${
+                        isSuccess ? "hidden" : "block"
+                    }`}
+                >
                     <label htmlFor="gambar">
                         <img
                             src={imagePreview}
@@ -60,6 +82,7 @@ function EditBlog({ blog }) {
                         value={data.nama}
                         onChange={(e) => setData("nama", e.target.value)}
                         placeholder="Nama"
+                        minLength={5}
                         maxLength={25}
                         required
                     />
@@ -69,7 +92,8 @@ function EditBlog({ blog }) {
                         value={data.deskripsi}
                         onChange={(e) => setData("deskripsi", e.target.value)}
                         placeholder="Deskripsi"
-                        maxLength={50}
+                        minLength={5}
+                        maxLength={100}
                         required
                     />
                     <Button disabled={processing}>Submit</Button>

@@ -72,13 +72,20 @@ function Pesanan({ pesanans }) {
             }
         });
     };
+    const HandleKontak = (kontak) => {
+        const message = encodeURIComponent(
+            `Hallo...\nSaya Mizan Story Id, akan konfirmasi pesanan anda. Terima Kasih.`
+        );
+        const whatsappUrl = `https://wa.me/${kontak}?text=${message}`;
+        window.open(whatsappUrl, "_blank");
+    };
 
     return (
         <div>
             <div>
                 <Sidebar />
             </div>
-            <div className="ml-[150px] mr-5 pt-20 relative">
+            <div className="pt-5 mx-5 md:mx-0 md:ml-[150px] md:mr-5 md:pt-20 relative">
                 {openPopup && (
                     <PopOver>
                         <div className="bg-white shadow-lg w-64 p-5 rounded-lg -mt-64">
@@ -97,9 +104,11 @@ function Pesanan({ pesanans }) {
                         </div>
                     </PopOver>
                 )}
-                <h1 className="font-bold mb-10">Daftar pesanan masuk</h1>
-                <div className="flex">
-                    <div className="mr-5 w-96 shadow-lg p-5 rounded-lg">
+                <h1 className="text-xs md:text-sm font-bold mb-10">
+                    Daftar pesanan masuk
+                </h1>
+                <div className="flex flex-col md:flex-row">
+                    <div className="mr-5 w-full md:w-96 h-32 md:h-64 shadow-lg p-5 rounded-lg">
                         <ProgressBar
                             progress={progressOrder}
                             nama={order}
@@ -108,82 +117,97 @@ function Pesanan({ pesanans }) {
                             totalProgress={progressOrder.toFixed(2)}
                         />
                     </div>
-                    <div className="mb-5 absolute top-20 left-[25%]">
+                    <div className="mt-10 md:mt-0 mx-auto md:mx-0 mb-5 md:absolute md:top-20 md:left-[30%]">
                         <input
                             type="text"
                             placeholder="Cari nama"
                             value={filterNama}
                             onChange={(e) => setFilterNama(e.target.value)}
-                            className="border border-blue-500 px-2 py-1 rounded-lg text-xs"
+                            className="w-64 px-2 md:py-1 rounded-lg text-xs"
                         />
                     </div>
-                    <table className="table-auto w-full shadow-lg rounded-lg p-10 bg-white">
+
+                    <table className="relative mt-10 md:mt-0 table-auto w-full shadow-lg rounded-lg p-5 bg-white">
+                        {selectedIds.length > 0 && (
+                            <div
+                                className="flex items-center absolute right-5 -top-2"
+                                onClick={handleDelete}
+                            >
+                                <Button
+                                    className={
+                                        "shadow-sm text-[10px] md:text-xs"
+                                    }
+                                >
+                                    Hapus
+                                </Button>
+                            </div>
+                        )}
                         <thead>
                             <tr className="border-b">
-                                <th className="border-r px-3 py-2 font-bold rounded-tl text-start text-blue-500 w-5">
+                                <th className="border-r px-2 md:px-3 py-2 font-bold rounded-tl text-start text-blue-500">
                                     <input
                                         type="checkbox"
                                         className="rounded outline-0"
                                         onChange={handleSelectAll}
                                     />
                                 </th>
-                                <th className="border-r px-3 py-4 font-bold text-start text-sm">
+                                <th className="border-r px-2 md:px-3 py-4 font-bold text-start text-xs w-64">
                                     Nama
                                 </th>
-                                <th className="border-r px-3 py-4 font-bold text-start text-sm">
+                                <th className="border-r px-2 md:px-3 py-4 font-bold text-start text-xs w-96">
                                     Kontak
                                 </th>
-                                <th className="px-3 py-4 font-bold text-start text-sm">
+                                <th className="px-2 md:px-3 py-4 font-bold text-start text-xs w-full">
                                     Order
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="relative text-sm">
+                        <tbody className="relative text-[10px]">
                             {getCurrentPageData().map((item, index) => (
                                 <tr key={index} className="border-b">
-                                    <td className="border-r px-3 py-2">
+                                    <td className="border-r px-2 md:px-3 py-1">
                                         <input
                                             type="checkbox"
                                             id={`select-${item.id}`}
-                                            className="mr-3 rounded outline-0"
+                                            className="rounded outline-0"
                                             checked={isSelected(item.id)}
                                             onChange={(e) =>
                                                 handleCheckboxChange(e, item.id)
                                             }
                                         />
                                     </td>
-                                    <td className="border-r px-3 py-2 font-bold">
+                                    <td className="border-r px-2 md:px-3 py-1 font-bold capitalize">
                                         {item.nama}
                                     </td>
-                                    <td className="border-r px-3 py-2">
+                                    <td className="border-r px-2 md:px-3 py-1 flex flex-col md:flex-row md:justify-between items-center pt-4">
                                         {item.kontak}
+                                        <div
+                                            onClick={() =>
+                                                HandleKontak(item.kontak)
+                                            }
+                                            className="md:ml-3 pt-4 md:pt-0"
+                                        >
+                                            <Button className={"text-[10px]"}>
+                                                Hubungi
+                                            </Button>
+                                        </div>
                                     </td>
-                                    <td className="px-3 py-2">
+                                    <td className="px-2 md:px-3 py-1">
                                         {item.deskripsi}
-                                    </td>
-                                    <td className=" absolute -top-[100px] right-0 px-3 py-2">
-                                        {selectedIds.length > 0 && (
-                                            <div
-                                                className="text-xs flex items-center"
-                                                onClick={handleDelete}
-                                            >
-                                                <Button className={"shadow-sm"}>
-                                                    Hapus
-                                                </Button>
-                                            </div>
-                                        )}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                    data={pesanans}
-                />
+                <div className="mb-20">
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                        data={pesanans}
+                    />
+                </div>
             </div>
         </div>
     );

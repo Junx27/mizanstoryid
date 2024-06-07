@@ -1,8 +1,5 @@
 import Button from "@/Components/Backend/Button";
-import Footer from "@/Components/Frontend/Footer";
-import Navbar from "@/Components/Frontend/Navbar";
 import SidebarKonsumen from "@/Components/Frontend/SidebarUser";
-import { Inertia } from "@inertiajs/inertia";
 import React, { useEffect, useState } from "react";
 
 function Welcome() {
@@ -20,17 +17,17 @@ function Welcome() {
         window.addEventListener("scroll", changePosition);
     });
     return (
-        <div>
+        <div className="overflow-hidden">
             <SidebarKonsumen />
-            <div className="pl-[250px] pt-64 grid grid-cols-2 px-32 bg-gray-50">
+            <div className="md:pl-[250px] md:pt-64 grid grid-cols-2 px-5 pt-20 md:px-32 bg-gray-50">
                 <div>
-                    <h1 className="font-bold text-xl mt-10">
+                    <h1 className="font-bold text-[10px] md:text-xl mt-10">
                         Jasa Sewa Drone di Purbalingga
                     </h1>
-                    <p className="text-[10px] text-gray-500 mt-5">
+                    <p className="text-[8px] md:text-[10px] text-gray-500 mt-5">
                         Create Your Story, Make Your Happy
                     </p>
-                    <div className="mt-5">
+                    <div className="mt-2 md:mt-5">
                         <a href="/price">
                             <Button>Order NOW!</Button>
                         </a>
@@ -40,12 +37,12 @@ function Welcome() {
                     <img src="fpv.png" alt="" className="mr-10 scale-125" />
                 </div>
             </div>
-            <div className="ml-[150px] mb-64 mt-20">
+            <div className="mx-5 md:mx-0 mt-12 md:ml-[150px] md:mb-64 md:mt-20">
                 <div className="">
-                    <h1 className="font-bold text-3xl text-center">
+                    <h1 className="font-bold text-xl md:text-3xl text-center">
                         Selamat Datang di Mizan Story.Id
                     </h1>
-                    <p className="text-gray-500 mt-5 text-[10px] text-center mx-64">
+                    <p className="text-gray-500 mt-5 text-[8px] md:text-[10px] text-center mx-4 md:mx-64">
                         Mizan Story.Id adalah layanan yang menyediakan drone
                         untuk digunakan dalam berbagai keperluan, mulai dari
                         pemotretan udara, pemetaan, survei, pengawasan, hingga
@@ -55,17 +52,17 @@ function Welcome() {
                         mahal.
                     </p>
                 </div>
-                <div className="mt-5">
+                <div className="mt-2 md:mt-5">
                     <div className="text-center">
                         <Button className={"w-32 mx-5"}>Branding</Button>
                         <Button className={"w-32 mx-5"}>Promosi</Button>
                         <Button className={"w-32 mx-5"}>Dokumentasi</Button>
                         <Button className={"w-32 mx-5"}>Momentum</Button>
                     </div>
-                    <div className="mt-20 relative flex justify-between items-center mx-64">
-                        <div className="ml-10">
+                    <div className="mt-5 md:mt-20 relative flex flex-col md:flex-row md:justify-between items-center md:mx-64">
+                        <div className="md:ml-10">
                             <h1 className="font-bold text-xs">Branding</h1>
-                            <p className="text-[10px] mt-3 w-64 indent-8 text-justify">
+                            <p className="text-[10px] mt-3 md:w-64 indent-8 text-justify mx-2">
                                 "Bangun branding bisnismu dengan konten yang
                                 menarik dan berdaya ungkit. Konten yang
                                 berkualitas dan menarik tidak hanya memperkuat
@@ -77,20 +74,26 @@ function Welcome() {
                                 membedakan bisnismu dari pesaing."
                             </p>
                         </div>
-                        <img
-                            src="branding.png"
-                            alt=""
-                            className="w-64 shadow p-5 rounded-lg"
-                        />
-                        <img
-                            src="fpv2.png"
-                            alt=""
-                            className="absolute scale-[40%] -top-10 right-10 shadow-lg rounded-[20px] p-2"
-                        />
+                        <div className="order-first md:order-last mb-5">
+                            <img
+                                src="branding.png"
+                                alt=""
+                                className="w-[200px] md:w-64 shadow p-5 rounded-lg"
+                            />
+                            <img
+                                src="fpv2.png"
+                                alt=""
+                                className="absolute scale-[40%] -top-10 right-32 md:right-10 shadow-lg rounded-[20px] p-2"
+                            />
+                        </div>
                     </div>
-                    <div className="relative mt-32 flex justify-between items-center mx-32">
-                        <img src="promosi.png" alt="" className="w-96" />
-                        <div className="ml-20 bg-white w-[500px] p-10 pb-20 shadow-lg rounded-lg">
+                    <div className="relative mt-20 md:mt-32 flex flex-col md:flex-row md:justify-between items-center mx-32">
+                        <img
+                            src="promosi.png"
+                            alt=""
+                            className="scale-[200%] md:scale-100 md:w-96"
+                        />
+                        <div className="md:ml-20 bg-white w-[400px] md:w-[500px] p-10 pb-20 shadow-lg rounded-lg">
                             <h1 className="font-bold text-xs">Promosi</h1>
                             <p className="text-[10px] mt-3 indent-8 text-justify">
                                 "Promosikan bisnismu dengan media digital dan
@@ -132,16 +135,16 @@ function Welcome() {
                                 detik berharga agar selalu dikenang."
                             </p>
                         </div>
-                        <div className="absolute bg-white top-[65%] left-32 p-5 pb-10 shadow-lg rounded-lg">
-                            <p className="text-[10px] w-64">
+                        <div className="absolute bg-white top-12 md:top-[65%] left-2 md:left-32 p-5 md:pb-10 shadow-lg rounded-lg">
+                            <p className="text-[10px] w-[200px] md:w-64">
                                 Dokumentasikan momentum berharga kamu bersama
                                 Mizan Story.Id
                             </p>
                         </div>
                     </div>
-                    <div className="z-10 relative mx-64 bg-white mt-32">
+                    <div className="z-10 relative md:mx-64 bg-white mt-10 md:mt-32 mb-32">
                         <h1 className="font-bold text-center">Bersama Kami</h1>
-                        <div className="text-[10px] p-10 px-32 shadow-lg rounded-lg">
+                        <div className="text-[10px] p-10 md:px-32 shadow-lg rounded-lg">
                             <div className="my-10 text-center shadow p-5 rounded-lg">
                                 <h1 className="font-bold text-xs">
                                     Bantuan Teknis

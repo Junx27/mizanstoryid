@@ -50,7 +50,7 @@ function CreatePaket() {
     };
 
     return (
-        <div className="w-[600px]">
+        <div className="md:w-[600px]">
             {isSuccess && (
                 <div className="relative w-[300px] h-screen mt-32">
                     <Modal>
@@ -69,7 +69,7 @@ function CreatePaket() {
             <Modal>
                 <form
                     onSubmit={handleSubmit}
-                    className={`flex flex-row ${
+                    className={`flex flex-col md:flex-row ${
                         isSuccess ? "hidden" : "block"
                     }`}
                     content=""
@@ -152,7 +152,7 @@ function CreatePaket() {
                             </option>
                         </SelectInput>
                     </div>
-                    <div className="ml-5">
+                    <div className="ml-0 md:ml-5">
                         <SelectInput
                             value={output}
                             onChange={(e) => setOutput(e.target.value)}
@@ -201,6 +201,8 @@ function CreatePaket() {
                             value={harga}
                             onChange={(e) => setHarga(e.target.value)}
                             placeholder="Harga"
+                            minLength={5}
+                            maxLength={25}
                             required
                         />
                         <TextAreaInput
@@ -209,6 +211,7 @@ function CreatePaket() {
                             value={deskripsi}
                             onChange={(e) => setDeskripsi(e.target.value)}
                             placeholder="Deskripsi"
+                            minLength={5}
                             maxLength={200}
                             required
                         ></TextAreaInput>

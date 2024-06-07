@@ -1,0 +1,1 @@
+import{j as r}from"./app-DIXEbt7d.js";const a=t=>{const e=new Date(t),o={day:"numeric",month:"long",year:"numeric"};return new Intl.DateTimeFormat("id-ID",o).format(e)},s=({isoDate:t})=>{const e=a(t);return r.jsx("div",{className:"text-[10px] text-gray-500",children:r.jsx("p",{children:e})})};export{s as D};

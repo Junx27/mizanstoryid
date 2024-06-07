@@ -1,8 +1,5 @@
 import Button from "@/Components/Backend/Button";
 import FormaterRupiah from "@/Components/Backend/FormaterRupiah";
-import HeaderSubText from "@/Components/Backend/HeaderSubText";
-import Footer from "@/Components/Frontend/Footer";
-import Navbar from "@/Components/Frontend/Navbar";
 import SidebarKonsumen from "@/Components/Frontend/SidebarUser";
 import React, { useState } from "react";
 import CreateOrder from "./Controller/CreateOrder";
@@ -26,21 +23,21 @@ function Price({ aerial, fpv }) {
     return (
         <div>
             <SidebarKonsumen />
-            <div className="ml-[150px]">
+            <div className="mx-5 md:mx-0 md:ml-[150px]">
                 <div>
                     <img
-                        src="aerial.png"
+                        src="djmavic.png"
                         alt=""
-                        className="w-[600px] h-96 object-cover mx-auto"
+                        className="scale-50 md:w-[600px] h-96 object-cover mx-auto -mt-20 md:mt-0"
                     />
-                    <h1 className="font-bold text-xl text-center my-2">
+                    <h1 className="-mt-32 md:-mt-20 font-bold text-sm md:text-xl text-center my-2">
                         Harga Sewa Drone AERIAL
                     </h1>
-                    <p className="text-gray-500 text-xs text-center mb-10">
+                    <p className="text-gray-500 text-[10px] md:text-xs text-center mb-10">
                         Pilihlah sesuai kebutuhan dokumentasi anda, harga
                         sewaktu-waktu dapat berubah
                     </p>
-                    <div className="grid grid-cols-3 gap-10 mx-10 font-medium">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:mx-10">
                         {aerial.map((row, index) => (
                             <div
                                 className={`transition-all duration-500 p-5 rounded-lg h-[520px] shadow-md hover:shadow-lg`}
@@ -63,7 +60,7 @@ function Price({ aerial, fpv }) {
                                 >
                                     {row.nama}
                                 </h1>
-                                <p className="text-xs mt-5 h-20 text-justify">
+                                <p className="text-xs mt-5 h-20 text-justify indent-8">
                                     {row.deskripsi}
                                 </p>
                                 <ul className="list-inside list-disc text-xs mb-5">
@@ -97,18 +94,18 @@ function Price({ aerial, fpv }) {
                 </div>
                 <div className="mb-20">
                     <img
-                        src="fpv.png"
+                        src="fpv2.png"
                         alt=""
-                        className="w-[800px] h-96 scale-[60%] object-cover mx-auto"
+                        className="w-full md:w-[800px] h-[470px] scale-[40%] -mt-20 md:mt-0 object-cover mx-auto"
                     />
-                    <h1 className="font-bold text-xl text-center my-2">
+                    <h1 className="-mt-32 md:-mt-20 font-bold text-sm md:text-xl text-center my-2">
                         Harga Sewa Drone FPV
                     </h1>
-                    <p className="text-gray-500 text-xs text-center mb-10">
+                    <p className="text-gray-500 text-[10px] md:text-xs text-center mb-10">
                         Pilihlah sesuai kebutuhan dokumentasi anda, harga
                         sewaktu-waktu dapat berubah
                     </p>
-                    <div className="grid grid-cols-3 gap-10 mx-10 font-medium">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:mx-10">
                         {fpv.map((row, index) => (
                             <div
                                 className={`transition-all duration-500 p-5 rounded-lg h-[520px] shadow-md hover:shadow-lg`}
@@ -131,7 +128,7 @@ function Price({ aerial, fpv }) {
                                 >
                                     {row.nama}
                                 </h1>
-                                <p className="text-xs mt-5 h-20 text-justify">
+                                <p className="text-xs mt-5 h-20 text-justify indent-8">
                                     {row.deskripsi}
                                 </p>
                                 <ul className="list-inside list-disc text-xs mb-5">

@@ -74,6 +74,7 @@ function CreateFoto() {
                 >
                     <div className={`${imagePreview ? "hidden" : "block"}`}>
                         <ImagePreviewInput
+                            type="file"
                             nama="gambar"
                             onChange={handleImageChange}
                         />
@@ -110,6 +111,8 @@ function CreateFoto() {
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Nama"
+                        minLength={5}
+                        maxLength={25}
                         required
                     />
                     <TextAreaInput
@@ -118,6 +121,7 @@ function CreateFoto() {
                         value={deskripsi}
                         onChange={(e) => setDeskripsi(e.target.value)}
                         placeholder="Deskripsi"
+                        minLength={5}
                         maxLength={50}
                         required
                     ></TextAreaInput>

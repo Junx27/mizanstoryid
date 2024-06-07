@@ -85,7 +85,6 @@ class FotoController extends Controller
         }
 
         Foto::findOrFail($id)->update($validatedData);
-        return Inertia::location("/galeri");
     }
 
 

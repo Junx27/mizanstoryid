@@ -84,7 +84,6 @@ class BlogController extends Controller
         }
 
         Blog::findOrFail($id)->update($validatedData);
-        return Inertia::location("/menu");
     }
 
     /**

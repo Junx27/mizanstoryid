@@ -73,15 +73,24 @@ function CreateVideo() {
                     content=""
                 >
                     <div className={`${imagePreview ? "hidden" : "block"}`}>
-                        <ImagePreviewInput
+                        <label htmlFor="gambar">
+                            <img
+                                src="gallery.png"
+                                alt=""
+                                className="w-[250px] mx-auto"
+                            />
+                        </label>
+                        <input
                             type="file"
                             nama="gambar"
+                            id="gambar"
                             onChange={handleImageChange}
+                            className="hidden"
                         />
                     </div>
                     {imagePreview && (
                         <div className="relative">
-                            <img
+                            <video
                                 src={imagePreview}
                                 alt="Preview"
                                 className="mt-2 rounded-lg w-[300px] h-[250px] object-cover shadow-lg"
@@ -111,6 +120,8 @@ function CreateVideo() {
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Nama"
+                        minLength={5}
+                        maxLength={25}
                         required
                     />
                     <TextAreaInput
@@ -119,6 +130,7 @@ function CreateVideo() {
                         value={deskripsi}
                         onChange={(e) => setDeskripsi(e.target.value)}
                         placeholder="Deskripsi"
+                        minLength={5}
                         maxLength={50}
                         required
                     ></TextAreaInput>

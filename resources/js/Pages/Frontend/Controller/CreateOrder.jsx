@@ -36,19 +36,24 @@ function CreateOrder({ order }) {
     return (
         <div className="w-[300px]">
             <Modal>
-                <h1 className="font-bold text-center">
+                <h1 className="font-bold text-center text-sm">
                     {order.nama_paket}/{order.nama}
                 </h1>
-                <div className="text-center my-2">
+                <div className="text-center my-2 text-xs">
                     <FormaterRupiah number={order.harga} />
                 </div>
+                <p className="text-[10px] text-gray-400 text-center">
+                    Agar kami dapat menghubungi anda, mohon masukan nomor hp
+                    dengan format seperti contoh dibawah ini.
+                </p>
                 <form onSubmit={handleSubmit}>
                     <TextInput
                         type="text"
                         name="nama"
                         value={data.nama}
                         onChange={(e) => setData("nama", e.target.value)}
-                        placeholder="Masukan nama"
+                        placeholder="Nama"
+                        minLength={5}
                         maxLength={25}
                         required
                     />
@@ -57,7 +62,8 @@ function CreateOrder({ order }) {
                         name="kontak"
                         value={data.kontak}
                         onChange={(e) => setData("kontak", e.target.value)}
-                        placeholder="Masukan kontak"
+                        placeholder="62812..."
+                        minLength={10}
                         maxLength={25}
                         required
                     />

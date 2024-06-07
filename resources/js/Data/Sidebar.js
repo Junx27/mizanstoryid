@@ -19,4 +19,9 @@ export const SideBarIcon = [
         gambar: "mail.png",
         link: "/pesanan",
     },
+    {
+        nama: "Logout",
+        gambar: "logout.png",
+        link: "/logout",
+    },
 ];
